@@ -111,4 +111,91 @@ Document title,Authors,Repository,Year
 "Constrained Layout Generation with Factor Graphs","Dupty, M.H.; Dong, Y.; Leng, S.; ...; Lu, W.; Lee, W.S.","arXiv",2024
 "Sketch-to-Architecture: Generative AI-aided Architectural Design","Li, P.; Li, B.; Li, Z.","arXiv",2024
 "SceneScript: Reconstructing Scenes With An Autoregressive Structured Language Model","Avetisyan, A.; Xie, C.; Howard-Jenkins, H.; ...; Newcombe, R.; Balntas, V.","arXiv",2024
-"Applicat
+"Application of an Agent-Based Post-Earthquake Evacuation Simulation to Enhance Early-Stage Design of Non-Structural and Architectural Layout","Hassanpour, S.; González, V.A.; Zou, Y.; Liu, J.; Cabrera-Guerrero, G.","SSRN",2024
+"Graph Transformer GANs with Graph Masked Modeling for Architectural Layout Generation","Tang, H.; Shao, L.; Sebe, N.; Gool, L.V.","arXiv",2024
+"A Generative Framework for Designing Linear-Modular Housing Integrated with a Real-Time User Interface","Samadi, P.; Sedghimehr, S.; Shevidi, S.; Garmaroodi, A.A.","SSRN",2024
+"Engineering Adaptive Information Graphics for Disabled Communities: A Case Study with Public Space Indoor Maps","Madugalla, A.; Huang, Y.; Grundy, J.; ...; Leao, T.; Thiele, S.","arXiv",2024
+"Sustainability through Optimal Design of Buildings for Natural Ventilation using Updated Comfort and Occupancy Models","Chung, J.; Shahmansouri, N.; Goldstein, R.; Stoddart, J.; Locke, J.","arXiv",2023
+"Adapting HouseDiffusion for conditional Floor Plan generation on Modified Swiss Dwellings dataset","Kuhn, E.","arXiv",2023
+"Low-Carbon-Oriented Commercial District Urban Form Optimization and Impact Assessment Analysis","Wang, J.; Liu, W.; Du, X.; Zhang, W.","SSRN",2023
+"Tell2Design: A Dataset for Language-Guided Floor Plan Generation","Leng, S.; Zhou, Y.; Dupty, M.H.; ...; Joyce, S.C.; Lu, W.","arXiv",2023
+"A Framework for Realistic Simulation of Daily Human Activity","Idrees, I.; Singh, S.; Xu, K.; Glas, D.F.","arXiv",2023
+"Multimodal Indoor Localization Using Crowdsourced Radio Maps","Yi, Z.; Wen, X.; Xia, Q.; ...; Alsehly, F.; Lu, C.X.","arXiv",2023
+"Automatic Digitization and Orientation of Scanned Mesh Data for Floor Plan and 3D Model Generation","Sharma, R.; Bier, E.; Nelson, L.; Bhandari, M.; Kunwar, N.","arXiv",2023
+"CALLOC: Curriculum Adversarial Learning for Secure and Robust Indoor Localization","Gufran, D.; Pasricha, S.","arXiv",2023
+"Fully Onboard Low-Power Localization with Semantic Sensor Fusion on a Nano-UAV using Floor Plans","Zimmerman, N.; Müller, H.; Magno, M.; Benini, L.","arXiv",2023
+"Exploring Indoor Health: An In-depth Field Study on the Indoor Air Quality Dynamics","Karmakar, P.; Pradhan, S.; Chakraborty, S.","arXiv",2023
+"A Study on Urban Block Design Strategies for Improving Pedestrian-Level Wind Conditions: Cfd-Based Optimization and Generative Adversarial Networks","Li, J.; Guo, F.; Chen, H.","SSRN",2023
+"A Comprehensive Indoor Environment Dataset from Single-family Houses in the US","Anik, S.M.H.; Gao, X.; Meng, N.","arXiv",2023
+"Walking = Traversable?: Traversability Prediction via Multiple Human Object Tracking under Occlusion","Liang, J.T.Y.; Tanaka, K.","arXiv",2023
+"AUTOENCODING TREE FOR CITY GENERATION AND APPLICATIONS","Han, W.; Wen, C.; Chok, L.; ...; Zhao, H.; Feng, C.","arXiv",2023
+"Sensitivity of Urban Morphology and the Number of CFD Simulated Wind Directions on Pedestrian Wind Comfort and Safety Assessments","Hågbo, T.-O.; Teigen Giljarhus, K.E.","SSRN",2023
+"Skip-Connected Neural Networks with Layout Graphs for Floor Plan Auto-Generation","Jeon, Y.; Tran, D.Q.; Park, S.","arXiv",2023
+"Ventilation's Role in Adaptable School Buildings: Comparing Traditional and Adaptable Strategies Through Life Cycle Assessment","Seuntjens, O.; Buyle, M.; Kabbara, Z.; Belmans, B.; Audenaert, A.","SSRN",2023
+"SSIG: A Visually-Guided Graph Edit Distance for Floor Plan Similarity","van Engelenburg, C.C.J.; Khademi, S.; van Gemert, J.C.","arXiv",2023
+"Generating Redstone Style Cities in Minecraft","Huang, S.; Hu, C.; Togelius, J.; Liu, J.","arXiv",2023
+"GlobalMapper: Arbitrary-Shaped Urban Layout Generation","He, L.; Aliaga, D.","arXiv",2023
+"AUTOMATING COMPUTATIONAL DESIGN WITH GENERATIVE AI","Ploennigs, J.; Berger, M.","arXiv",2023
+"Towards predicting Pedestrian Evacuation Time and Density from Floorplans using a Vision Transformer","Berggold, P.; Nousias, S.; Dubey, R.K.; Borrmann, A.","arXiv",2023
+"PolyDiffuse: Polygonal Shape Reconstruction via Guided Set Diffusion Models","Chen, J.; Deng, R.; Furukawa, Y.","arXiv",2023
+"The Power of Progressive Active Learning in Floorplan Images for Energy Assessment","Al-Turki, D.; Kyriakou, M.; Basurra, S.; Gaber, M.M.; Abdelsamea, M.M.","Research Square",2023
+"A Hybrid Semantic-Geometric Approach for Clutter-Resistant Floorplan Generation from Building Point Clouds","Kim, S.; Yajima, Y.; Park, J.; Chen, J.; Cho, Y.K.","arXiv",2023
+"Hier-RTLMP: A Hierarchical Automatic Macro Placer for Large-scale Complex IP Blocks","Kahng, A.B.; Varadarajan, R.; Wang, Z.","arXiv",2023
+"CONTROLLABLE EXPLORATION OF A DESIGN SPACE VIA INTERACTIVE QUALITY DIVERSITY","Sfikas, K.; Liapis, A.; Yannakakis, G.N.","arXiv",2023
+"2D Floor Plan Segmentation Based on Down-sampling","Sharif, M.; Mohan, K.; Suvarna, S.","arXiv",2023
+"Constructing Metric-Semantic Maps using Floor Plan Priors for Long-Term Indoor Localization","Zimmerman, N.; Sodano, M.; Marks, E.; Behley, J.; Stachniss, C.","arXiv",2023
+"Graph Transformer GANs for Graph-Constrained House Generation","Tang, H.; Zhang, Z.; Shi, H.; ...; Timofte, R.; Van Gool, L.","arXiv",2023
+"ARCHITEXT: LANGUAGE-DRIVEN GENERATIVE ARCHITECTURE DESIGN","Galanos, T.; Liapis, A.; Yannakakis, G.N.","arXiv",2023
+"Towards Practical Multi-Robot Hybrid Tasks Allocation for Autonomous Cleaning","Wang, Y.; Hong, X.; Ma, Z.; ...; Qin, B.; Su, Z.","arXiv",2023
+"Boosting the 3D thermal-aware floorplanning problem through a master-worker parallel MOEA","Arnaldo, I.; Cuesta-Infante, A.; Colmenar, J.M.; Risco-Martín, J.L.; Ayala, J.L.","arXiv",2023
+"CLIP-Layout: Style-Consistent Indoor Scene Synthesis with Semantic Furniture Embedding","Liu, J.; Xiong, W.; Jones, I.; ...; Gupta, A.; Oguz, B.","arXiv",2023
+"Seismic Retrofit of Italian Pre-‘70 Residential Rc Buildings by Solving Shear Failures: Improvement in Seismic Safety and Required Economic Effort","De Risi, M.T.; Scala, S.A.; Del Gaudio, C.; Verderame, G.M.","SSRN",2023
+"Heuristic Optimization for Designing Centralized Air Distribution Systems in Non-Residential Buildings","Kabbara, Z.; Jorens, S.; Matbouli, H.; Van Thillo, J.; Verhaert, I.","SSRN",2023
+"A Grammar-Based Approach for Generating Spatial Layout Solutions for the Adaptive Reuse of Sobrado Buildings","Melo Santos Paulino, D.; Ligler, H.; Napolitano, R.","SSRN",2023
+"Impact of the Centrality for Public Spaces- A Case of Railway Station","Chilakapati, A.K.; Srikonda, R.; Jeyasingh, V.; Iyer, V.","SSRN",2022
+"Wireless Channel Delay Spread Performance Evaluation of a Building Layout","Huang, Y.; Zhang, J.; Zhang, J.","arXiv",2022
+"HouseDiffusion: Vector Floorplan Generation via a Diffusion Model with Discrete and Continuous Denoising","Shabani, M.A.; Hosseini, S.; Furukawa, Y.","arXiv",2022
+"Structured Exploration Through Instruction Enhancement for Object Navigation","Hutsebaut-Buysse, M.; Mets, K.; De Schepper, T.; Latré, S.","arXiv",2022
+"Floor Plan Exploration Framework Based on Similarity Distances","Shih, C.-Y.; Peng, C.-H.","arXiv",2022
+"Uncertainty Quantification of Inflow on Passive Scalar Dispersion in Urban Environment","Boppana, V.B.L.; Nguyen, V.-T.; Wise, D.J.; Leong, J.Y.C.","SSRN",2022
+"EVALUATING LONG-TERM MEMORY IN 3D MAZES","Pasukonis, J.; Lillicrap, T.; Hafner, D.","arXiv",2022
+"Vitruvio: 3D Building Meshes via Single Perspective Sketches","Tono, A.; Huang, H.; Agrawal, A.; Fischer, M.","arXiv",2022
+"Offset-Guided Attention Network for Room-Level Aware Floor Plan Segmentation","Wang, Z.; Sun, N.","arXiv",2022
+"Forecasting Human Trajectory from Scene History","Meng, M.; Wu, Z.; Chen, T.; ...; Yang, F.; Shen, D.","arXiv",2022
+"Floorplan-Aware Camera Poses Refinement","Sokolova, A.; Nikitin, F.; Vorontsova, A.; Konushin, A.","arXiv",2022
+"People living with OI raise their VOICE. Community-based exploration with Photovoice online of daily mobility challenges and possible solutions for Adults living with Osteogenesis Imperfecta (OI) in the western world: A pilot-study","Fink, S.H.; Van Poppel, M.N.M.; Amort, F.M.","Research Square",2022
+"UNav: An Infrastructure-Independent Vision-Based Navigation System for People with Blindness and Low vision","Yang, A.; Beheshti, M.; Hudson, T.E.; ...; Feng, C.; Rizzo, J.-R.","arXiv",2022
+"Autonomy-supportive environments for people with dementia: an evidence-based review","Jiajing, L.I.","Research Square",2022
+"The Design of Urban Block Morphological Elements and the Improvement of Microclimate Comfort Using the Genetic Algorithm","Zou, Y.; Geng, X.; Meng, L.; Geng, X.","SSRN",2022
+"360Roam: Real-Time Indoor Roaming Using Geometry-Aware 360◦ Radiance Fields","Huang, H.; Chen, Y.; Zhang, T.; Yeung, S.-K.","arXiv",2022
+"End-to-end Graph-constrained Vectorized Floorplan Generation with Panoptic Refinement","Liu, J.; Xue, Y.; Duarte, J.; ...; Zhou, Z.; Huang, X.","arXiv",2022
+"MCTS with Refinement for Proposals Selection Games in Scene Understanding","Stekovic, S.; Rad, M.; Moradi, A.; Fraundorfer, F.; Lepetit, V.","arXiv",2022
+"FLOOR MAP RECONSTRUCTION THROUGH RADIO SENSING AND LEARNING BY A LARGE INTELLIGENT SURFACE","Vaca-Rubio, C.J.; Pereira, R.; Mestre, X.; ...; de Carvalho, E.; Popovski, P.","arXiv",2022
+"Floorplan Restoration by Structure Hallucinating Transformer Cascades","Hosseini, S.; Furukawa, Y.","arXiv",2022
+"Exploration and evaluation of design quality through floor plan layout (FPLs) of an existing design space using the ARLE GPS tool. Case study","das Neves Martins, D.","Research Square",2022
+"Generating Topological Structure of Floorplans from Room Attributes","Yin, Y.; Hutchcroft, W.; Khosravan, N.; ...; Fu, Y.; Kang, S.B.","arXiv",2022
+"ARLE GPS: A computational tool to aid solve the creative design of a house. Case study.","das Neves Martins, D.","Research Square",2022
+"A New Tool for Early Design Window View Satisfaction Evaluation in Residential Buildings","Kim, J.; Kent, M.; Kral, K.; Dogan, T.","arXiv",2022
+"RFID-Based Indoor Spatial Query Evaluation with Bayesian Filtering Techniques","Hui, B.; Wang, W.; Yu, J.; ...; Sun, M.-T.; Lu, H.","arXiv",2022
+"FloorGenT: Generative Vector Graphic Model of Floor Plans for Robotics","Ericson, L.; Jensfelt, P.","arXiv",2022
+"Unified Physical Threat Monitoring System Aided by Virtual Building Simulation","Li, Z.; Norton, B.","arXiv",2022
+"Transformation in Public Housing-Predictors, Patterns, Motivations, Processes, Challenges and Satisfaction of Residents within Selected Estates in Northern Nigeria","Maina, J.J.","SSRN",2022
+"Cognitively Grounded Floorplan Optimization to Nudge Occupant Route Choices","Dubey, R.K.; Morad, M.G.; Sohn, S.S.; ...; Hölscher, C.; Kapdia, M.","SSRN",2022
+"Few-Shot Object Detection: A Comprehensive Survey","Köhler, M.; Eisenbach, M.; Gross, H.-M.","arXiv",2021
+"Roominoes: Generating novel 3D floor plans from existing 3D rooms","Wang, K.; Xu, X.; Lei, L.; ...; Savva, M.; Ritchie, D.","arXiv",2021
+"DoodleFormer: Creative Sketch Drawing with Transformers","Bhunia, A.K.; Khan, S.; Cholakkal, H.; ...; Laaksonen, J.; Felsberg, M.","arXiv",2021
+"HEAT: Holistic Edge Attention Transformer for Structured Reconstruction","Chen, J.; Qian, Y.; Furukawa, Y.","arXiv",2021
+"ActFloor-GAN: Activity-guided adversarial networks for Human-centric floorplan design","Wang, S.; Zeng, W.; Chen, X.; ...; Qiao, Y.; Fu, C.-W.","arXiv",2021
+"Sesak®: A Crowd Simulation Software with an Optimization Engine for a Safer Building Design","Khamis, N.; Selamat, H.; Ismail, F.S.","SSRN",2021
+"ArchABM: An agent-based simulator of human interaction with the built environment. CO2 and viral load analysis for indoor air quality","Martinez, I.; Bruse, J.L.; Florez-Tapia, A.M.; Viles, E.; Olaizola, I.G.","arXiv",2021
+"Fundamental Wireless Performance of a Building","Zhang, J.; Glazunov, A.A.; Yang, W.; Zhang, J.","arXiv",2021
+"ATISS: Autoregressive transformers for indoor scene synthesis","Paschalidou, D.; Kar, A.; Shugrina, M.; ...; Geiger, A.; Fidler, S.","arXiv",2021
+"Plan2Scene: Converting floorplans to 3D scenes","Vidanapathirana, M.; Wu, Q.; Furukawa, Y.; Chang, A.X.; Savva, M.","arXiv",2021
+"Fusion-DHL: WiFi, IMU, and floorplan fusion for dense history of locations in indoor environments","Herath, S.; Irandoust, S.; Chen, B.; ...; Kim, P.; Furukawa, Y.","arXiv",2021
+"Splay Tree Hybridized Multicriteria ant Colony and Bregman Divergencive Firefly Optimized Vlsi Floorplanning","Balakrishnan, S.; Venkatesan, R.","Research Square",2021
+"Combinatorial generation via permutation languages. III. Rectangulations","Merino, A.; Mütze, T.","arXiv",2021
+"Knowledge driven description synthesis for floor plan interpretation","Goyal, S.; Chattopadhyay, C.; Bhatnagar, G.","arXiv",2021
+"GRIHA: Synthesizing 2-dimensional building layouts from images captured using a smart phone","Goyal, S.; Khan, N.; Chattopadhyay, C.; Bhatnagar, G.","arXiv",2021
+"Versailles-FP dataset: Wall detection in ancient","Swaileh, W.; Kotzinos, D.; Ghosh, S.; ...; Vu, S.; Qian, Y.","arXiv",2021
+"Translating declarative control elements to imperative using ‘l-value redefinition graphs’","Savidis, A.","arXiv",2021
+"House-GAN++: Generative adversarial layout refinement networks","Nauata, N.; Hosseini, S.; Chang, K.-H.; ...; Cheng, C.-Y.; Furukawa, Y.","arXiv",2021
