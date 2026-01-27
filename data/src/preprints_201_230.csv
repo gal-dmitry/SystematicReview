@@ -1,0 +1,31 @@
+Document title,Authors,Repository,Year
+"Walk2Map: Extracting floor plans from indoor walk trajectories","Mura, C.; Pajarola, R.; Schindler, K.; Mitra, N.","arXiv",2021
+"GenFloor: Interactive Generative Space Layout System via Encoded Tree Graphs","Keshavarzi, M.; Rahmani-Asl, M.","arXiv",2021
+"Self-calibrating indoor localization with crowdsourcing fingerprints and transfer learning","Xiang, C.; Zhang, S.; Xu, S.; Alexandropoulos, G.C.","arXiv",2021
+"MoSen: Activity modelling in multiple-occupancy smart homes","Zhan, Y.; Haddadi, H.","arXiv",2021
+"End-to-end generative floor-plan and layout with attributes and relation graph","Di, X.; Yu, P.; Yang, D.; ...; Sun, C.; Liu, Y.","arXiv",2020
+"Graph-based generative representation learning of semantically and behaviorally augmented floorplans","Azizi, V.; Usman, M.; Zhou, H.; Faloutsos, P.; Kapadia, M.","arXiv",2020
+"GenScan: A generative method for populating parametric 3D scan datasets","Keshavarzi, M.; Afolabi, O.; Caldas, L.; Yang, A.Y.; Zakhor, A.","arXiv",2020
+"3D-FRONT: 3D furnished rooms with layouts and semantics","Fu, H.; Cai, B.; Gao, L.; ...; Zhao, B.; Zhang, H.","arXiv",2020
+"Deep-Learning-Aided Path Planning and Map Construction for Expediting Indoor Mapping","Zwecher, E.; Iceland, E.; Hayoun, S.Y.; ...; Levy, S.R.; Barel, A.","arXiv",2020
+"SketchOpt: Sketch-based parametric model retrieval for generative design","Keshavarzi, M.; Hutson, C.; Cheng, C.-Y.; ...; Bergin, M.; Asl, M.R.","arXiv",2020
+"Wireless performance evaluation of building layouts: Closed-form computation of figures of merit","Zhang, J.; Glazunov, A.A.; Zhang, J.","arXiv",2020
+"Machine Learning for Exploring Spatial Affordance Patterns","Buyuklieva, B.","arXiv",2020
+"Graph2Plan: Learning Floorplan Generation from Layout Graphs","Hu, R.; Huang, Z.; Tang, Y.; ...; Zhang, H.; Huang, H.","arXiv",2020
+"Should i tear down this wall? Optimizing social metrics by evaluating novel actions","Kramár, J.; Rabinowitz, N.; Eccles, T.; Tacchetti, A.","arXiv",2020
+"Scan2Plan: Efficient Floorplan Generation from 3D Scans of Indoor Scenes","Phalak, A.; Badrinarayanan, V.; Rabinovich, A.","arXiv",2020
+"House-GAN: Relational generative adversarial networks for graph-constrained house layout generation","Nauata, N.; Chang, K.-H.; Cheng, C.-Y.; Mori, G.; Furukawa, Y.","arXiv",2020
+"Intelligent home 3D: Automatic 3D-house design from linguistic descriptions only","Chen, Q.; Wu, Q.; Tang, R.; ...; Wang, S.; Tan, M.","arXiv",2020
+"Online Semantic Exploration of Indoor Maps","Liu, Z.; Chen, D.; von Wichert, G.","arXiv",2020
+"Extracting Semantic Indoor Maps from Occupancy Grids","Liu, Z.; von Wichert, G.","arXiv",2020
+"Deep learning surrogate models for spatial and visual connectivity","Tarabishy, S.; Psarras, S.; Kosicki, M.; Tsigkari, M.","arXiv",2019
+"Aegis: A context-aware security framework for smart home systems","Sikder, A.K.; Babun, L.; Aksu, H.; Selcuk Uluagac, A.","arXiv",2019
+"Automated Generation of Dimensioned Rectangular Floorplans","Upasani, N.; Shekhawat, K.; Sachdeva, G.","arXiv",2019
+"Floorplan: Spatial Layout in Memory Management Systems","Cronburg, K.; Guyer, S.Z.","arXiv",2019
+"Floor-SP: Inverse CAD for floorplans by sequential room-wise shortest path","Chen, J.; Liu, C.; Wu, J.; Furukawa, Y.","arXiv",2019
+"Generalized fault-tolerance topology generation for application specific network-on-chips","Chen, S.; Ge, M.; Li, Z.; ...; Xu, Q.; Wu, F.","arXiv",2019
+"Combinatorial generation via permutation languages. I. Fundamentals","Hartung, E.; Hoang, H.P.; Mütze, T.; Williams, A.","arXiv",2019
+"Organic building generation in minecraft","Green, M.C.; Salge, C.; Togelius, J.","arXiv",2019
+"Two-step constructive approaches for dungeon generation","Green, M.C.; Khalifa, A.; Alsoughayer, A.; ...; Liapis, A.; Togelius, J.","arXiv",2019
+"Painting on placement: forecasting routing congestion using conditional generative adversarial nets","Yu, C.; Zhang, Z.","arXiv",2019
+"HouseExpo: A large-scale 2D indoor layout dataset for learning-based algorithms on mobile robots","Li, T.; Ho, D.; Li, C.; ...; Wang, C.; Meng, M.Q.-H.","arXiv",2019
