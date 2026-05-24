@@ -1,49 +1,47 @@
 ,input_semantics,output_semantics,Count
-39,space adjacencies/attributes,entrance door + interior doors + room function and contour,5
-14,building contour + entrance door + space adjacencies/attributes,entrance door + interior doors + room function and contour + walls + windows,3
-27,building contour + space contour/BB/center/center and width,entrance door + interior doors + room function and contour + walls + windows,3
-43,space adjacencies/attributes,room function and contour,3
-21,building contour + space adjacencies/attributes,entrance door + interior doors + room function and contour,2
-9,building contour + entrance door,entrance door + interior doors + room function and contour + walls + windows,2
-40,space adjacencies/attributes,entrance door + interior doors + room function and contour + walls + windows,2
-36,natural language,room function and contour,2
-45,space adjacencies/attributes + walls,room function and contour + walls,2
-20,building contour + natural language,entrance door + room function and contour,2
-46,space attributes,room function and contour,2
-0,EUI + attributes + building contour + entrance door + floorplan image + interior doors + sketch + space adjacencies/attributes + space contour/BB/center/center and width + walls,entrance door + interior doors + room function and contour + walls + windows,1
-4,building contour,entrance door + interior doors + room function and contour,1
-5,building contour,room function and contour,1
-2,attributes + building contour + space adjacencies/attributes,entrance door + interior doors + room function and contour + walls + windows,1
-1,activity map + building contour + entrance door,entrance door + interior doors + room function and contour + walls,1
-15,building contour + entrance door + space adjacencies/attributes,entrance door + room function and contour,1
-13,building contour + entrance door + interior doors + space contour/BB/center/center and width,entrance door + interior doors + room function and contour + walls,1
-12,building contour + entrance door + floorplan image + interior doors + natural language + space adjacencies/attributes + space contour/BB/center/center and width + walls,entrance door + interior doors + room function and contour + walls + windows,1
-11,building contour + entrance door,room function and contour + walls,1
-8,building contour + entrance door,entrance door + interior doors + room function and contour + walls,1
-10,building contour + entrance door,interior doors + room function and contour,1
-6,building contour,room function and contour + walls,1
-7,building contour + columns,columns + entrance door + interior doors + walls,1
-3,building contour,entrance door + furniture + interior doors + walls + windows,1
-24,building contour + space adjacencies/attributes + space attributes,entrance door + interior doors + room function and contour,1
-23,building contour + space adjacencies/attributes,room function and contour + walls,1
-16,building contour + entrance door + space adjacencies/attributes,room function and contour,1
-19,building contour + natural language,entrance door + interior doors + room function and contour + walls + windows,1
-18,building contour + floorplan image + space adjacencies/attributes,entrance door + interior doors + room function and contour + walls,1
-22,building contour + space adjacencies/attributes,room connections + room function and contour,1
-17,building contour + entrance door + space attributes,entrance door + interior doors + room function and contour + walls + windows,1
-31,floorplan class + natural language,entrance door + interior doors + room function and contour + windows,1
-30,empty,entrance door + interior doors + walls + windows,1
-29,building contour + space contour/BB/center/center and width + walls,room function and contour + walls,1
-28,building contour + space contour/BB/center/center and width,walls,1
-26,building contour + space attributes,room function and contour,1
-25,building contour + space attributes,entrance door + interior doors + room function and contour + walls + windows,1
-32,natural language,entrance door + interior doors + room function and contour,1
-33,natural language,entrance door + interior doors + room function and contour + stairs + walls + windows,1
-38,natural language + space adjacencies/attributes,room function and contour,1
-37,natural language + space adjacencies/attributes,entrance door + interior doors + room function and contour + walls + windows,1
-34,natural language,entrance door + interior doors + room function and contour + walls + windows,1
-35,natural language,entrance door + room function and contour,1
-42,space adjacencies/attributes,flat masks,1
-41,space adjacencies/attributes,entrance door + interior doors + walls + windows,1
-44,space adjacencies/attributes,room function and contour + walls,1
-47,spaces/doors,entrance door + interior doors + room function and contour,1
+38,space adjacencies/attributes,entrance door + interior doors + space contour/function,5
+41,space adjacencies/attributes,space contour/function,4
+11,building contour + entrance door + space adjacencies/attributes,entrance door + interior doors + space contour/function + walls/columns + windows,3
+25,building contour + space contour/BB/center/center and width,entrance door + interior doors + space contour/function + walls/columns + windows,3
+8,building contour + entrance door + floorplan attributes + floorplan image + interior doors + sketch/activity map + space adjacencies/attributes + space contour/BB/center/center and width + walls/columns,entrance door + interior doors + space contour/function + walls/columns + windows,2
+5,building contour + entrance door,entrance door + interior doors + space contour/function + walls/columns + windows,2
+43,space adjacencies/attributes + walls/columns,space contour/function + walls/columns,2
+18,building contour + natural language,entrance door + space contour/function,2
+35,natural language,space contour/function,2
+39,space adjacencies/attributes,entrance door + interior doors + space contour/function + walls/columns + windows,2
+19,building contour + space adjacencies/attributes,entrance door + interior doors + space contour/function,2
+44,space attributes,space contour/function,2
+1,building contour,entrance door + interior doors + space contour/function,1
+2,building contour,space contour/function,1
+13,building contour + entrance door + space adjacencies/attributes,space contour/function,1
+12,building contour + entrance door + space adjacencies/attributes,entrance door + space contour/function,1
+10,building contour + entrance door + sketch/activity map,entrance door + interior doors + space contour/function + walls/columns,1
+9,building contour + entrance door + interior doors + space contour/BB/center/center and width,entrance door + interior doors + space contour/function + walls/columns,1
+6,building contour + entrance door,interior doors + space contour/function,1
+7,building contour + entrance door,space contour/function + walls/columns,1
+3,building contour,space contour/function + walls/columns,1
+4,building contour + entrance door,entrance door + interior doors + space contour/function + walls/columns,1
+0,building contour,entrance door + furniture + interior doors + walls/columns + windows,1
+22,building contour + space adjacencies/attributes + space attributes,entrance door + interior doors + space contour/function,1
+21,building contour + space adjacencies/attributes,space contour/function + walls/columns,1
+14,building contour + entrance door + space attributes,entrance door + interior doors + space contour/function + walls/columns + windows,1
+17,building contour + natural language,entrance door + interior doors + space contour/function + walls/columns + windows,1
+16,building contour + floorplan image + space adjacencies/attributes,entrance door + interior doors + space contour/function + walls/columns,1
+20,building contour + space adjacencies/attributes,space adjacencies + space contour/function,1
+15,building contour + floorplan attributes + space adjacencies/attributes,entrance door + interior doors + space contour/function + walls/columns + windows,1
+29,empty,entrance door + interior doors + walls/columns + windows,1
+28,building contour + walls/columns,entrance door + interior doors + walls/columns,1
+27,building contour + space contour/BB/center/center and width + walls/columns,space contour/function + walls/columns,1
+26,building contour + space contour/BB/center/center and width,walls/columns,1
+24,building contour + space attributes,space contour/function,1
+23,building contour + space attributes,entrance door + interior doors + space contour/function + walls/columns + windows,1
+32,natural language,entrance door + interior doors + space contour/function + stairs + walls/columns + windows,1
+30,floorplan attributes + natural language,entrance door + interior doors + space contour/function + windows,1
+37,natural language + space adjacencies/attributes,space contour/function,1
+36,natural language + space adjacencies/attributes,entrance door + interior doors + space contour/function + walls/columns,1
+34,natural language,entrance door + space contour/function,1
+33,natural language,entrance door + interior doors + space contour/function + walls/columns + windows,1
+31,natural language,entrance door + interior doors + space contour/function,1
+40,space adjacencies/attributes,entrance door + interior doors + walls/columns + windows,1
+42,space adjacencies/attributes,space contour/function + walls/columns,1
+45,space contour/BB/center/center and width,entrance door + interior doors + space contour/function,1
