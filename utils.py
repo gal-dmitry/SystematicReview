@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 import seaborn as sns
+from copy import deepcopy
 from matplotlib.ticker import MaxNLocator
 
 
@@ -34,10 +35,11 @@ def _process_model(df_model):
     return df_model
 
 
-def _process_input(df_model):
+def _process_input_output(df_model):
     df_model["input"] = df_model["Neural Input (modality: semantics)"].apply(lambda x: set(x.split(", ")))
     df_model["input_modality"] = df_model["input"].apply(lambda x: set(i.split(": ")[0] for i in x))
     df_model["input_content"] = df_model["input"].apply(lambda x: set(i.split(": ")[1] for i in x if i != "Absent")) ### to check later !!!
+    df_model["output_content"] = df_model["Ultimate Output semantics"].apply(lambda x: set(x.split(", ")))
     return df_model
 
 
@@ -51,7 +53,7 @@ def read_and_process_csv(path):
     df_metrics = _process_metrics(df)
     df_model = df[df.topic.apply(lambda x: "Model" in x)].reset_index(drop=True)
     df_model = _process_model(df_model)
-    df_model = _process_input(df_model)
+    df_model = _process_input_output(df_model)
 
     print(f"papers -- total: {df.shape[0]}")
     print(f"papers -- new generative method : {df_model.shape[0]}")
@@ -378,7 +380,6 @@ def plot_input_content(df_model, ax=None):
 
 
 def plot_output_content(df_model, ax=None):
-    df_model["output_content"] = df_model["Ultimate Output semantics"].apply(lambda x: set(x.split(", ")))
     counts = df_model["output_content"].explode().value_counts(ascending=True)
 
     cmap = plt.cm.Set3
