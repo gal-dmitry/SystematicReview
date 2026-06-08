@@ -1,21 +1,24 @@
 level1,level2,count
 graphs,space adjacencies/attributes,24
-pixels,building contour,30
+pixels,activity map,1
 pixels,entrance door,14
+pixels,floorplan,3
 pixels,floorplan attributes,2
-pixels,floorplan image,3
+pixels,floorplan contour,30
 pixels,interior doors,3
-pixels,sketch/activity map,3
-pixels,space adjacencies/attributes,2
-pixels,space contour/BB/center/center and width,8
-pixels,walls/columns,5
-polygons,building contour,3
-polygons,space contour/BB/center/center and width,1
-sequence,building contour,2
+pixels,partial floorplan,2
+pixels,space adjacencies/attributes,5
+pixels,space attributes,1
+pixels,space geometry,7
+pixels,walls/columns,6
+pixels,windows,1
+polygons,floorplan contour,3
+polygons,space geometry,1
 sequence,floorplan attributes,4
-sequence,natural language,12
-sequence,space adjacencies/attributes,5
+sequence,floorplan contour,2
+sequence,floorplan description,12
+sequence,space adjacencies/attributes,3
 vector,space attributes,6
-wall graphs,building contour,2
 wall graphs,entrance door,1
+wall graphs,floorplan contour,2
 wall graphs,walls/columns,1
