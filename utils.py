@@ -472,6 +472,7 @@ def plot_sankey_input(df_model):
 
     fig.update_layout(
         title_text="Modality → Content",
+        title_font_size=20,
         # font_size=16,
         # font_size=24,
         font_size=20,
@@ -479,19 +480,142 @@ def plot_sankey_input(df_model):
         height=800
     )
 
-    # fig.show()
-
     fig.write_image(
         "data/results/input_modality_content.svg",
         scale=4,
     )
+
+    return fig
 
 
 
 """
 Input/Output: Information Gain
 """
-### to be done
+def _aggregate_input_content(s):
+    if not len(s):
+        return "empty condition"
+    elif s & {"floorplan", "partial floorplan"}:
+        return "complete floorplan"
+    elif {"space geometry"} & s:
+        return "space geometry + other"
+    elif {"walls/columns", "entrance door", "interior door", "windows"} & s:
+        return "intermediates + anchors"
+    else:
+        if len(s) == 1:
+            return f"intermediates x1"
+        else:
+            return f"intermediates x2+"
+
+
+def _aggregate_output_content(s):
+    if "space contour/function" in s:
+        result = "space geometry"
+        length = len(s) - 1
+        if length > 0:
+            if length >= 4:
+                length = "4+"
+            result += f" + anchors x{length}"
+
+    else:
+        result = "anchors x1+"
+    return result
+
+
+def _get_input_output_groups(df_model):
+    df_model = df_model.copy()
+    print(f"dropped rows: {df_model[df_model["Conditioning Regimes"] == "either"].shape[0]}")
+    df_model = df_model[df_model["Conditioning Regimes"] != "either"]
+    df_model['input_content_grouped'] = df_model['input_content'].apply(_aggregate_input_content)
+    df_model['output_content_grouped'] = df_model['output_content'].apply(_aggregate_output_content)
+
+    cooc = (
+        df_model
+        .groupby(['input_content_grouped', 'output_content_grouped'])
+        .size()
+        .reset_index(name='Count')
+    ).sort_values("Count", ascending=False)
+
+    df_model = df_model[["Title", "input_content", "input_content_grouped", "output_content", "output_content_grouped"]]
+    return df_model, cooc
+
+
+def print_information_gain_groups(df_):
+
+    best = df_[(df_.input_content_grouped == "intermediates x1") & (df_.output_content_grouped == "space geometry + anchors x4+")]
+    print("highest information gain:")
+    for title in best.Title:
+        print("-", title)
+    print()
+
+    worst = df_[df_.input_content_grouped == "complete floorplan"]
+    print("zero information gain:")
+    for title in worst.Title:
+        print("-", title)
+    print()
+    print()
+
+
+# def plot_subgroups(df_):
+#     fig, ax = plt.subplots(2, 3, sharex=True)
+
+#     df_[df_.input_content_grouped == "intermediates x1"].input_content.value_counts().plot(kind="barh", ax=ax[0][0])
+#     df_[df_.input_content_grouped == "intermediates x2+"].input_content.value_counts().plot(kind="barh", ax=ax[0][1])
+#     df_[df_.input_content_grouped == "intermediates + anchors"].input_content.value_counts().plot(kind="barh", ax=ax[0][2])
+#     df_[df_.input_content_grouped == "space geometry + other"].input_content.value_counts().plot(kind="barh", ax=ax[1][0])
+#     df_[df_.input_content_grouped == "complete floorplan"].input_content.value_counts().plot(kind="barh", ax=ax[1][1])
+#     df_[df_.input_content_grouped == "empty condition"].input_content.value_counts().plot(kind="barh", ax=ax[1][2])
+
+
+def plot_input_output_groups(df_model):
+
+    df_, cooc = _get_input_output_groups(df_model)
+    df_.to_csv("data/results/input_output_content_groups_titles.csv", index=False)
+    cooc.to_csv("data/results/input_output_content_groups_cooc.csv", index=False)
+    print_information_gain_groups(df_)
+
+    sources = cooc["input_content_grouped"].astype(str)
+    targets = cooc["output_content_grouped"].astype(str)
+    values = cooc["Count"]
+
+    # Create unique node list
+    nodes = pd.Index(pd.concat([sources, targets]).unique())
+
+    # Map labels to numeric IDs
+    source_ids = sources.map(nodes.get_loc)
+    target_ids = targets.map(nodes.get_loc)
+
+    fig = go.Figure(data=[go.Sankey(
+        node=dict(
+            label=nodes.tolist(),
+            pad=15,
+            thickness=18,
+        ),
+        link=dict(
+            source=source_ids,
+            target=target_ids,
+            value=values
+        )
+    )])
+
+    fig.update_layout(
+        title_text="Content: Input → Output",
+        title_font_size=20,
+        width=1200,
+        height=800,
+        font=dict(
+            color="brown",
+            size=20,
+        )
+    )
+
+    fig.write_image(
+        "data/results/input_output_content_groups.svg",
+        scale=4,
+    )
+
+    return fig
+
 
 
 """
