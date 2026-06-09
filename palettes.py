@@ -1,3 +1,12 @@
+import matplotlib.pyplot as plt
+from matplotlib.colors import to_hex
+
+tab20_colors = [
+    to_hex(c)
+    for c in plt.get_cmap("tab20").colors
+]
+
+
 OKABE_ITO = [
     "#E69F00",
     "#56B4E9",
@@ -78,4 +87,18 @@ LANCET = [
 ]
 
 
+MODALITY_COLORS = {
+    "pixels":           "#4E79A7",
+    "graphs":           "#F28E2B",
+    "wall graphs":      "#E15759",
+    "sequence":         "#76B7B2",
+    "vector":           "#59A14F",
+    "polygons":         "#EDC948",
+    "coordinates":      "#B07AA1",
+    "cellular grid":    "#FF9DA7",
+    "Absent":           "#9C755F",
+}
+
+
 DEFAULT_PALETTE = TABLEAU
+# DEFAULT_PALETTE = tab20_colors

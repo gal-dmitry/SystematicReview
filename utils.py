@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 import seaborn as sns
 from copy import deepcopy
 from matplotlib.ticker import MaxNLocator
-from palettes import DEFAULT_PALETTE
+from palettes import DEFAULT_PALETTE, MODALITY_COLORS
 
 
 PATH = r"data\src\conflated_database___2026_03_31__11_14_35.xlsx"
@@ -38,9 +38,13 @@ def _process_model(df_model):
 
 def _process_input_output(df_model):
     df_model["input"] = df_model["Neural Input (modality: semantics)"].apply(lambda x: set(x.split(", ")))
+
     df_model["input_modality"] = df_model["input"].apply(lambda x: set(i.split(": ")[0] for i in x))
     df_model["input_content"] = df_model["input"].apply(lambda x: set(i.split(": ")[1] for i in x if i != "Absent")) ### to check later !!!
+
+    df_model["output_modality"] = df_model["Neural Output (modality)"].apply(lambda x: x.split(", "))
     df_model["output_content"] = df_model["Ultimate Output semantics"].apply(lambda x: set(x.split(", ")))
+
     return df_model
 
 
@@ -72,11 +76,12 @@ def _bar(
     y_label="y label",
     rot=0,
     ax=None,
+    colors=None,
 ):
     ax = counts.plot(
         kind=kind,
         # figsize=(10,5),
-        color=DEFAULT_PALETTE,
+        color=DEFAULT_PALETTE if not colors else colors,
         edgecolor="white",
         linewidth=0.4,
         rot=rot,
@@ -165,7 +170,7 @@ def _plot_sankey(
     src_col="level1",
     trg_col="level2",
     value_col="count",
-    title_text="Input: modality → Content",
+    title_text="Input: Modality → Content",
     save_path="data/results/input_modality_content.svg",
 ):  
     
@@ -530,53 +535,96 @@ def plot_pre_post_processing(df_model):
 """
 Input/Output: Modality
 """
-def plot_input_modality(df_model, ax=None):
+# def plot_input_modality(df_model, ax=None):
 
-    counts = df_model["input_modality"].explode().value_counts(ascending=True)
+#     counts = df_model["input_modality"].explode().value_counts(ascending=True)
 
-    cmap = plt.cm.tab20
-    num_colors = len(counts.index)
-    colors = [
-        cmap(i / num_colors) for i in range(num_colors)
-    ]
+#     cmap = plt.cm.tab20
+#     num_colors = len(counts.index)
+#     colors = [
+#         cmap(i / num_colors) for i in range(num_colors)
+#     ]
 
-    counts.plot(
-        kind="barh", 
-        xlabel="# papers", 
-        ylabel="Input modality",
-        color=colors,
-        ax=ax,
-    )
+#     counts.plot(
+#         kind="barh", 
+#         xlabel="# papers", 
+#         ylabel="Input modality",
+#         color=colors,
+#         ax=ax,
+#     )
 
 
-def plot_output_modality(df_model, ax=None):
-    df_model["output_modality"] = df_model["Neural Output (modality)"].apply(lambda x: x.split(", "))
-    counts = df_model["output_modality"].explode().value_counts(ascending=True)
+# def plot_output_modality(df_model, ax=None):
+#     df_model["output_modality"] = df_model["Neural Output (modality)"].apply(lambda x: x.split(", "))
+#     counts = df_model["output_modality"].explode().value_counts(ascending=True)
 
-    cmap = plt.cm.Set3
-    num_colors = len(counts.index)
-    colors = [
-        cmap(i / num_colors) for i in range(num_colors)
-    ]
+#     cmap = plt.cm.Set3
+#     num_colors = len(counts.index)
+#     colors = [
+#         cmap(i / num_colors) for i in range(num_colors)
+#     ]
 
-    counts.plot(
-        kind="barh", 
-        xlabel="# papers", 
-        ylabel="Output modality",
-        color=colors,
-        ax=ax,
-    )
+#     counts.plot(
+#         kind="barh", 
+#         xlabel="# papers", 
+#         ylabel="Output modality",
+#         color=colors,
+#         ax=ax,
+#     )
+
+
+# def plot_input_output_modality(df_model):
+
+#     fig, ax = plt.subplots(1, 2, sharex=True, figsize=(8, 4))
+    
+#     plot_input_modality(df_model, ax=ax[0])
+#     plot_output_modality(df_model, ax=ax[1])
+
+#     ax[0].set_title("(a)", fontsize=11)
+#     ax[1].set_title("(b)", fontsize=11)
+
+#     plt.tight_layout()
+#     plt.show()
 
 
 def plot_input_output_modality(df_model):
 
-    fig, ax = plt.subplots(1, 2, sharex=True, figsize=(8, 4))
-    
-    plot_input_modality(df_model, ax=ax[0])
-    plot_output_modality(df_model, ax=ax[1])
+    output_counts = df_model["output_modality"].explode().value_counts(ascending=True)
+    input_counts = df_model["input_modality"].explode().value_counts(ascending=True)
 
-    ax[0].set_title("(a)", fontsize=11)
-    ax[1].set_title("(b)", fontsize=11)
+    input_colors = [
+        MODALITY_COLORS[m]
+        for m in input_counts.index
+    ]
+
+    output_colors = [
+        MODALITY_COLORS[m]
+        for m in output_counts.index
+    ]
+
+    fig, ax = plt.subplots(1, 2, sharex=True, figsize=(8, 4))
+    _bar(
+        input_counts,
+        colors=input_colors,
+        kind="barh",
+        x_label="# papers",
+        y_label="",
+        rot=0,
+        ax=ax[0],
+    )
+    
+    _bar(
+        output_counts,
+        colors=output_colors,
+        kind="barh",
+        x_label="# papers",
+        y_label="",
+        rot=0,
+        ax=ax[1],
+    )
+
+    ax[0].set_title("(a) Input Modality", fontsize=10)
+    ax[1].set_title("(b) Output Modality", fontsize=10)
 
     plt.tight_layout()
     plt.show()
@@ -1118,10 +1166,10 @@ def get_matrix(df_repr):
     s_normative = df_repr["Normative Compliance"].explode().value_counts(ascending=True)
     s_intrinsic = df_repr["Intrinsic"].explode().value_counts(ascending=True)
 
-    s_similarity.name = "similarity"
-    s_instruction.name = "instriction_following"
-    s_normative.name = "normative_compliance"
-    s_intrinsic.name = "intrinsic"
+    s_similarity.name = "Similarity"
+    s_instruction.name = "Instruction-Following"
+    s_normative.name = "Normative Compliance"
+    s_intrinsic.name = "Intrinsic"
 
     matrix = pd.concat(
         [
