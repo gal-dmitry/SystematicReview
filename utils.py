@@ -65,6 +65,34 @@ def read_and_process_csv(path):
 """
 Matplotlib Blocks
 """
+def _bar(
+    counts,
+    kind="bar",
+    x_label="x label",
+    y_label="y label",
+):
+    ax = counts.plot(
+        kind=kind,
+        # figsize=(10,5),
+        color=DEFAULT_PALETTE,
+        edgecolor="white",
+        linewidth=0.4,
+        rot=0,
+    )
+
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+
+    if kind == "bar":
+        ax.grid(axis="y", alpha=0.25)
+    else:
+        ax.grid(axis="x", alpha=0.25)
+
+
 def _stacked_bar(
     counts,
     kind="bar",
@@ -846,29 +874,43 @@ def plot_generalizability(df):
 """
 User Studies
 """
+# def plot_user_studies(df):
+
+#     df["user_studies"] = df["User Studies"].apply(lambda x: x.split(", "))
+#     counts = df["user_studies"].explode().value_counts(ascending=True)
+#     counts = counts.drop("Absent")
+    
+#     cmap = plt.cm.Set3
+#     # cmap = plt.cm.Pastel1
+#     # cmap = plt.cm.tab20b
+    
+#     num_colors = len(counts.index)
+#     colors = [
+#         cmap(i / num_colors) for i in range(num_colors)
+#     ]
+
+#     ax = counts.plot(
+#         kind="barh", 
+#         xlabel="# papers", 
+#         ylabel="User study type",
+#         color=colors,
+#     )
+
+#     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+
+
 def plot_user_studies(df):
 
     df["user_studies"] = df["User Studies"].apply(lambda x: x.split(", "))
     counts = df["user_studies"].explode().value_counts(ascending=True)
     counts = counts.drop("Absent")
     
-    cmap = plt.cm.Set3
-    # cmap = plt.cm.Pastel1
-    # cmap = plt.cm.tab20b
-    
-    num_colors = len(counts.index)
-    colors = [
-        cmap(i / num_colors) for i in range(num_colors)
-    ]
-
-    ax = counts.plot(
-        kind="barh", 
-        xlabel="# papers", 
-        ylabel="User study type",
-        color=colors,
+    _bar(
+        counts,
+        kind="barh",
+        x_label="# papers",
+        y_label="User study type",
     )
-
-    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
 
 
 
