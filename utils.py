@@ -4,6 +4,7 @@ import plotly.graph_objects as go
 import seaborn as sns
 from copy import deepcopy
 from matplotlib.ticker import MaxNLocator
+from palettes import DEFAULT_PALETTE
 
 
 PATH = r"data\src\conflated_database___2026_03_31__11_14_35.xlsx"
@@ -58,6 +59,71 @@ def read_and_process_csv(path):
     print(f"papers -- total: {df.shape[0]}")
     print(f"papers -- new generative method : {df_model.shape[0]}")
     return df, df_metrics, df_model
+
+
+
+"""
+Matplotlib Blocks
+"""
+def _stacked_bar(
+    counts,
+    kind="bar",
+    x_label="x label",
+    y_label="y label",
+    outside_legend=False,
+):
+
+    ax = counts.plot(
+        kind=kind,
+        stacked=True,
+        # figsize=(10,5),
+        color=DEFAULT_PALETTE,
+        edgecolor="white",
+        linewidth=0.4,
+        rot=0,
+    )
+
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+
+    if outside_legend:
+        ax.legend(
+            bbox_to_anchor=(1.02,1),
+            loc="upper left",
+            # frameon=False,
+            title=None
+        )
+    else:
+        ax.legend(
+            # bbox_to_anchor=(1.02,1),
+            # loc="upper left",
+            # frameon=False,
+            title=None
+        )
+
+    if kind == "bar":
+        ax.grid(axis="y", alpha=0.25)
+    else:
+        ax.grid(axis="x", alpha=0.25)
+
+
+def add_count_to_legend(counts):
+    totals = counts.sum(axis=0)
+    sorted_counts = (
+        totals
+        .sort_values(ascending=False)
+        .index
+    )
+    counts = counts[sorted_counts]
+    cols = counts.columns.to_list()
+    counts.columns = [
+        f"{publisher} ({int(totals[publisher])})"
+        for publisher in cols
+    ]
+    return counts
 
 
 
@@ -128,32 +194,39 @@ MODEL_COLOR_MAP = {
 def plot_model_per_year(df_model):
     counts = df_model.groupby(['Year', 'Model']).size().unstack(fill_value=0).sort_index()
     
-    colors = [
-        MODEL_COLOR_MAP.get(col, "#cccccc")
-        for col in counts.columns
-    ]
+    # colors = [
+    #     MODEL_COLOR_MAP.get(col, "#cccccc")
+    #     for col in counts.columns
+    # ]
 
-    totals = counts.sum(axis=0)
-    sorted_counts = (
-        totals
-        .sort_values(ascending=False)
-        .index
+    # totals = counts.sum(axis=0)
+    # sorted_counts = (
+    #     totals
+    #     .sort_values(ascending=False)
+    #     .index
+    # )
+    # counts = counts[sorted_counts]
+    # cols = counts.columns.to_list()
+    # counts.columns = [
+    #     f"{publisher} ({totals[publisher]})"
+    #     for publisher in cols
+    # ]
+    counts = add_count_to_legend(counts)
+
+    # ax = counts.plot(
+    #     kind='bar',
+    #     stacked=True,
+    #     rot=0,
+    #     ylabel="# papers",
+    #     color=colors,
+    # )
+
+    _stacked_bar(
+        counts,
+        kind="bar",
+        x_label="Year",
+        y_label="# papers",
     )
-    counts = counts[sorted_counts]
-    cols = counts.columns.to_list()
-    counts.columns = [
-        f"{publisher} ({totals[publisher]})"
-        for publisher in cols
-    ]
-
-    ax = counts.plot(
-        kind='bar',
-        stacked=True,
-        rot=0,
-        ylabel="# papers",
-        color=colors,
-    )
-
 
 
 """
@@ -641,37 +714,53 @@ def plot_dataset_per_year(df):
     )
     y_lim = counts.values.max()*2
 
-    totals = counts.sum(axis=0)
-    sorted_counts = (
-        totals
-        .sort_values(ascending=False)
-        .index
-    )
-    counts = counts[sorted_counts]
-    counts.columns = [
-        f"{publisher} ({totals[publisher]})"
-        for publisher in counts.columns
-    ]
+    # totals = counts.sum(axis=0)
+    # sorted_counts = (
+    #     totals
+    #     .sort_values(ascending=False)
+    #     .index
+    # )
+    # counts = counts[sorted_counts]
+    # counts.columns = [
+    #     f"{publisher} ({totals[publisher]})"
+    #     for publisher in counts.columns
+    # ]
 
-    # cmap = plt.cm.Set3
-    cmap = plt.cm.tab20c
-    num_colors = len(counts.index)
-    colors = [
-        cmap(i / num_colors) for i in range(num_colors)
-    ]
+    counts = add_count_to_legend(counts)
 
-    ax = counts.plot(
-        kind='bar',
-        stacked=True,
-        ylabel='# papers',
-        color=colors,
-        # figsize=(12,6)
-    )
-    ax.tick_params(axis='x', rotation=0)
-    # ax.grid(axis='y')
-    ax.set_ylim(
-        0,
-        y_lim * 1.1,
+    # # cmap = plt.cm.Set3
+    # cmap = plt.cm.tab20c
+    # num_colors = len(counts.index)
+    # colors = [
+    #     cmap(i / num_colors) for i in range(num_colors)
+    # ]
+
+    # ax = counts.plot(
+    #     kind='bar',
+    #     stacked=True,
+    #     ylabel='# papers',
+    #     color=colors,
+    #     # figsize=(12,6)
+    # )
+    # ax.tick_params(axis='x', rotation=0)
+    # # ax.grid(axis='y')
+    # ax.set_ylim(
+    #     0,
+    #     y_lim * 1.1,
+    # )
+
+    
+    # _stacked_bar_vertical(
+    #     counts,
+    #     "Year",
+    #     "# papers",
+    # )
+
+    _stacked_bar(
+        counts,
+        kind="bar",
+        x_label="Year",
+        y_label="# papers",
     )
 
 
@@ -679,54 +768,78 @@ def plot_dataset_per_year(df):
 """
 Generalizability
 """
-def generalizability_barh(df, col, xlabel=None, ylabel=None):
+# def generalizability_barh(df, col, xlabel=None, ylabel=None):
 
+#     df[f"M_{col}"] = df[col].apply(lambda x: x.split(", "))
+
+#     exploded = df[f"M_{col}"].explode()
+#     exploded = exploded.apply(_split_levels)
+#     exploded.columns = ['Level1', 'Level2']
+
+#     # exploded['Level2'] = exploded['Level2'].fillna('Absent')
+#     exploded = exploded[exploded["Level1"] != "Absent"]
+#     # print(exploded)
+
+#     counts = exploded.groupby(['Level1', 'Level2']).size().unstack(fill_value=0)
+#     totals = counts.sum(axis=1)
+#     counts = counts.loc[totals.sort_values(ascending=True).index]
+    
+#     # cmap = plt.cm.Set2
+#     # num_colors = len(counts.index)
+#     # colors = [
+#     #     cmap(i / num_colors) for i in range(num_colors)
+#     # ]
+
+#     ax = counts.plot(
+#         kind='barh',
+#         stacked=True,
+#         rot=0,
+#         # color=colors,
+#         # figsize=(2.5, 5)
+#     )
+    
+#     ax.legend(
+#         loc='center left',
+#         bbox_to_anchor=(1, 0.5)
+#     )
+    
+#     if xlabel is not None:
+#         plt.xlabel(xlabel)
+#     if ylabel is not None:
+#         plt.ylabel(ylabel)
+
+#     ax.set_xlim(
+#         0,
+#         9,
+#     )
+
+#     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+
+#     return ax
+
+
+def plot_generalizability(df):
+
+    col = "Generalizability"
     df[f"M_{col}"] = df[col].apply(lambda x: x.split(", "))
 
     exploded = df[f"M_{col}"].explode()
     exploded = exploded.apply(_split_levels)
     exploded.columns = ['Level1', 'Level2']
 
-    # exploded['Level2'] = exploded['Level2'].fillna('Absent')
     exploded = exploded[exploded["Level1"] != "Absent"]
-    # print(exploded)
-
     counts = exploded.groupby(['Level1', 'Level2']).size().unstack(fill_value=0)
-    totals = counts.sum(axis=1)
-    counts = counts.loc[totals.sort_values(ascending=True).index]
-    
-    # cmap = plt.cm.Set2
-    # num_colors = len(counts.index)
-    # colors = [
-    #     cmap(i / num_colors) for i in range(num_colors)
-    # ]
+    counts = counts.loc[counts.sum(axis=1).sort_values(ascending=True).index]
 
-    ax = counts.plot(
-        kind='barh',
-        stacked=True,
-        rot=0,
-        # color=colors,
-        # figsize=(2.5, 5)
+    counts = add_count_to_legend(counts)
+
+    _stacked_bar(
+        counts,
+        kind="barh",
+        x_label="# papers",
+        y_label="Generalizability/Memorization Technique",
+        outside_legend=True,
     )
-    
-    ax.legend(
-        loc='center left',
-        bbox_to_anchor=(1, 0.5)
-    )
-    
-    if xlabel is not None:
-        plt.xlabel(xlabel)
-    if ylabel is not None:
-        plt.ylabel(ylabel)
-
-    ax.set_xlim(
-        0,
-        9,
-    )
-
-    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
-
-    return ax
 
 
 
@@ -978,24 +1091,38 @@ def plot_stacked_bars(df_metrics):
     totals = matrix_.sum(axis=1)
     matrix_ = matrix_.loc[totals.sort_values(ascending=True).index]
 
-    ax = matrix_.plot(
-        kind="barh",
-        stacked=True,
-        # figsize=(5, 5),
-        # width=0.8,
-    )
+    counts = add_count_to_legend(matrix_)
+
+    # ax = matrix_.plot(
+    #     kind="barh",
+    #     stacked=True,
+    #     # figsize=(5, 5),
+    #     # width=0.8,
+    # )
     
-    ax.set_xlabel("# papers")
-    ax.set_ylabel("Automatic Function Group")
+    # ax.set_xlabel("# papers")
+    # ax.set_ylabel("Automatic Function Group")
 
-    ax.legend(
-        title="Representation",
-        # bbox_to_anchor=(1.02, 0.5),
-        # loc="center left"
+    # ax.legend(
+    #     title="Representation",
+    #     # bbox_to_anchor=(1.02, 0.5),
+    #     # loc="center left"
+    # )
+
+    # # plt.xticks(rotation=45)
+    # # plt.yticks(rotation=0)
+    # plt.tight_layout()
+    # plt.show()
+
+    # _stacked_bar_horisontal(
+    #     matrix_,
+    #     "Metric Group",
+    #     "# papers",
+    # )
+
+    _stacked_bar(
+        counts,
+        kind="barh",
+        x_label="# papers",
+        y_label="Metric Group",
     )
-
-    # plt.xticks(rotation=45)
-    # plt.yticks(rotation=0)
-    plt.tight_layout()
-    plt.show()
-
