@@ -70,6 +70,8 @@ def _bar(
     kind="bar",
     x_label="x label",
     y_label="y label",
+    rot=0,
+    ax=None,
 ):
     ax = counts.plot(
         kind=kind,
@@ -77,7 +79,8 @@ def _bar(
         color=DEFAULT_PALETTE,
         edgecolor="white",
         linewidth=0.4,
-        rot=0,
+        rot=rot,
+        ax=ax,
     )
 
     ax.spines["top"].set_visible(False)
@@ -98,7 +101,9 @@ def _stacked_bar(
     kind="bar",
     x_label="x label",
     y_label="y label",
+    rot=0,
     outside_legend=False,
+    ax=None,
 ):
 
     ax = counts.plot(
@@ -108,7 +113,8 @@ def _stacked_bar(
         color=DEFAULT_PALETTE,
         edgecolor="white",
         linewidth=0.4,
-        rot=0,
+        rot=rot,
+        ax=ax,
     )
 
     ax.spines["top"].set_visible(False)
@@ -152,6 +158,71 @@ def add_count_to_legend(counts):
         for publisher in cols
     ]
     return counts
+
+
+def _plot_sankey(
+    df,
+    src_col="level1",
+    trg_col="level2",
+    value_col="count",
+    title_text="Input: modality → Content",
+    save_path="data/results/input_modality_content.svg",
+):  
+    
+    sources = df[src_col].astype(str)
+    targets = df[trg_col].astype(str)
+    values = df[value_col]
+
+    nodes = pd.Index(pd.concat([sources, targets]).unique())
+
+    source_ids = sources.map(nodes.get_loc)
+    target_ids = targets.map(nodes.get_loc)
+
+    # Node sizes: total in + total out
+    out_counts = df.groupby(src_col)[value_col].sum()
+    in_counts = df.groupby(trg_col)[value_col].sum()
+
+    node_counts = {
+        node: int(max(out_counts.get(node, 0), in_counts.get(node, 0)))
+        for node in nodes
+    }
+
+    labels = [
+        f"{node} ({node_counts[node]})"
+        for node in nodes
+    ]
+
+    fig = go.Figure(data=[go.Sankey(
+        arrangement="snap",
+        node=dict(
+            label=labels,
+            pad=25,
+            thickness=22,
+            line=dict(color="rgba(0,0,0,0.25)", width=0.5),
+        ),
+        link=dict(
+            source=source_ids,
+            target=target_ids,
+            value=values,
+            color="rgba(120,120,120,0.25)",
+        )
+    )])
+
+    fig.update_layout(
+        title_text=title_text,
+        title_font_size=20,
+        font_size=20,
+        width=1400,
+        height=900,
+        margin=dict(l=40, r=40, t=80, b=40),
+    )
+
+    fig.write_image(
+        save_path,
+        scale=4,
+    )
+
+    return fig
 
 
 
@@ -336,10 +407,72 @@ def _split_levels(x):
 #     return ax
 
 
-def plot_pre_post_processing(df_model):
+# def plot_pre_post_processing(df_model):
 
-    fig, ax = plt.subplots(1, 2, sharey=True, figsize=(10, 5))
+#     fig, ax = plt.subplots(1, 2, sharey=True, figsize=(10, 5))
 
+#     col = "Pre processing outside generative model"
+#     df_model[f"M_{col}"] = df_model[col].apply(lambda x: x.split(", "))
+
+#     exploded = df_model[f"M_{col}"].explode()
+#     exploded = exploded.apply(_split_levels)
+#     exploded.columns = ['Level1', 'Level2']
+#     exploded = exploded[exploded["Level1"] != "Absent"]
+
+#     counts = exploded.groupby(['Level1', 'Level2']).size().unstack(fill_value=0)
+#     totals = counts.sum(axis=1)
+#     counts = counts.loc[totals.sort_values(ascending=True).index]
+
+#     # cmap = plt.cm.Set2
+#     # num_colors = len(counts.index)
+#     # colors = [
+#     #     cmap(i / num_colors) for i in range(num_colors)
+#     # ]
+
+#     counts.plot(
+#         kind='bar',
+#         stacked=True,
+#         rot=45,
+#         ax=ax[0]
+#     )
+
+#     ax[0].set_ylim(
+#         0,
+#         10 * 1,
+#     )
+#     ax[0].set_xlabel("")
+#     ax[0].set_ylabel("# papers")
+#     ax[0].set_title("(a) Pre-processing")
+
+#     df_model["postprocessing"] = df_model["Post processing outside generative model"].apply(lambda x: x.split(", "))
+#     counts = df_model["postprocessing"].explode().value_counts(ascending=True)
+#     counts = counts.drop("Absent")
+
+#     # cmap = plt.cm.tab20
+#     cmap = plt.cm.tab20c
+#     # cmap = plt.cm.Set3
+#     num_colors = len(counts.index)
+#     colors = [
+#         cmap(i / num_colors) for i in range(num_colors)
+#     ]
+
+#     counts.plot(
+#         kind="bar", 
+#         color=colors,
+#         rot=45,
+#         ax=ax[1]
+#     )
+
+#     ax[1].set_ylim(
+#         0,
+#         10 * 1,
+#     )
+#     ax[1].set_xlabel("")
+#     ax[1].set_ylabel("# papers")
+#     ax[1].set_title("(b) Post-processing")
+
+
+def _extract_preprocessing_data(df_model):
     col = "Pre processing outside generative model"
     df_model[f"M_{col}"] = df_model[col].apply(lambda x: x.split(", "))
 
@@ -351,56 +484,48 @@ def plot_pre_post_processing(df_model):
     counts = exploded.groupby(['Level1', 'Level2']).size().unstack(fill_value=0)
     totals = counts.sum(axis=1)
     counts = counts.loc[totals.sort_values(ascending=True).index]
+    counts = add_count_to_legend(counts)
+    return counts
 
-    # cmap = plt.cm.Set2
-    # num_colors = len(counts.index)
-    # colors = [
-    #     cmap(i / num_colors) for i in range(num_colors)
-    # ]
 
-    counts.plot(
-        kind='bar',
-        stacked=True,
-        rot=45,
-        ax=ax[0]
-    )
-
-    ax[0].set_ylim(
-        0,
-        10 * 1,
-    )
-    ax[0].set_xlabel("")
-    ax[0].set_ylabel("# papers")
-    ax[0].set_title("(a) Pre-processing")
-
+def _extract_postprocessing_data(df_model):
     df_model["postprocessing"] = df_model["Post processing outside generative model"].apply(lambda x: x.split(", "))
     counts = df_model["postprocessing"].explode().value_counts(ascending=True)
     counts = counts.drop("Absent")
+    return counts
 
-    # cmap = plt.cm.tab20
-    cmap = plt.cm.tab20c
-    # cmap = plt.cm.Set3
-    num_colors = len(counts.index)
-    colors = [
-        cmap(i / num_colors) for i in range(num_colors)
-    ]
 
-    counts.plot(
-        kind="bar", 
-        color=colors,
-        rot=45,
-        ax=ax[1]
+def plot_pre_post_processing(df_model):
+
+    pre_counts = _extract_preprocessing_data(df_model)
+    post_counts = _extract_postprocessing_data(df_model)
+    rot = 15
+
+    fig, ax = plt.subplots(1, 2, sharey=True, figsize=(10, 5))
+    _stacked_bar(
+        pre_counts,
+        kind="bar",
+        x_label="",
+        y_label="# papers",
+        rot=rot,
+        outside_legend=False,
+        # outside_legend=True,
+        ax=ax[0],
     )
 
-    ax[1].set_ylim(
-        0,
-        10 * 1,
+    _bar(
+        post_counts,
+        kind="bar",
+        x_label="",
+        y_label="# papers",
+        rot=rot,
+        ax=ax[1],
     )
-    ax[1].set_xlabel("")
-    ax[1].set_ylabel("# papers")
-    ax[1].set_title("(b) Post-processing")
 
+    ax[0].set_title("(a) Pre-processing", size=10)
+    ax[1].set_title("(b) Post-processing", size=10)
 
+    
 
 """
 Input/Output: Modality
@@ -535,58 +660,26 @@ def _get_csv_modality_content(df_model):
     counts.to_csv("data/results/input_modality_content.csv", index=False)
 
 
-def plot_sankey_input(df_model):
-    
+def plot_sankey_input_modality_content(df_model):
     _get_csv_modality_content(df_model)
 
-    df_coocurence = pd.read_csv("data/results/input_modality_content.csv")
+    df = pd.read_csv("data/results/input_modality_content.csv")
+    df = df[["level1", "level2", "count"]].copy()
 
-    # Keep only needed columns
-    df_coocurence = df_coocurence[["level1", "level2", "count"]]
+    # Optional: remove very small flows
+    # df = df[df["count"] >= 2]
 
-    # Optional: remove tiny flows if diagram is too crowded
-    # df = df[df["Count"] >= 2]
+    # Sort for more stable/readable layout
+    df = df.sort_values(["level1", "count"], ascending=[True, False])
 
-    sources = df_coocurence["level1"].astype(str)
-    targets = df_coocurence["level2"].astype(str)
-    values = df_coocurence["count"]
-
-    # Create unique node list
-    nodes = pd.Index(pd.concat([sources, targets]).unique())
-
-    # Map labels to numeric IDs
-    source_ids = sources.map(nodes.get_loc)
-    target_ids = targets.map(nodes.get_loc)
-
-    fig = go.Figure(data=[go.Sankey(
-        node=dict(
-            label=nodes.tolist(),
-            pad=15,
-            thickness=18
-        ),
-        link=dict(
-            source=source_ids,
-            target=target_ids,
-            value=values
-        )
-    )])
-
-    fig.update_layout(
-        title_text="Modality → Content",
-        title_font_size=20,
-        # font_size=16,
-        # font_size=24,
-        font_size=20,
-        width=1200,
-        height=800
+    return _plot_sankey(
+        df,
+        src_col="level1",
+        trg_col="level2",
+        value_col="count",
+        title_text="Input: modality → Content",
+        save_path="data/results/input_modality_content.svg",
     )
-
-    fig.write_image(
-        "data/results/input_modality_content.svg",
-        scale=4,
-    )
-
-    return fig
 
 
 
@@ -668,54 +761,77 @@ def print_information_gain_groups(df_):
 #     df_[df_.input_content_grouped == "empty condition"].input_content.value_counts().plot(kind="barh", ax=ax[1][2])
 
 
-def plot_input_output_groups(df_model):
+# def plot_input_output_groups(df_model):
 
-    df_, cooc = _get_input_output_groups(df_model)
-    df_.to_csv("data/results/input_output_content_groups_titles.csv", index=False)
+#     df_, cooc = _get_input_output_groups(df_model)
+#     df_.to_csv("data/results/input_output_content_groups_titles.csv", index=False)
+#     cooc.to_csv("data/results/input_output_content_groups_cooc.csv", index=False)
+#     print_information_gain_groups(df_)
+
+#     sources = cooc["input_content_grouped"].astype(str)
+#     targets = cooc["output_content_grouped"].astype(str)
+#     values = cooc["Count"]
+
+#     # Create unique node list
+#     nodes = pd.Index(pd.concat([sources, targets]).unique())
+
+#     # Map labels to numeric IDs
+#     source_ids = sources.map(nodes.get_loc)
+#     target_ids = targets.map(nodes.get_loc)
+
+#     fig = go.Figure(data=[go.Sankey(
+#         node=dict(
+#             label=nodes.tolist(),
+#             pad=15,
+#             thickness=18,
+#         ),
+#         link=dict(
+#             source=source_ids,
+#             target=target_ids,
+#             value=values
+#         )
+#     )])
+
+#     fig.update_layout(
+#         title_text="Content: Input → Output",
+#         title_font_size=20,
+#         width=1200,
+#         height=800,
+#         font=dict(
+#             color="brown",
+#             size=20,
+#         )
+#     )
+
+#     fig.write_image(
+#         "data/results/input_output_content_groups.svg",
+#         scale=4,
+#     )
+
+#     return fig
+
+
+def plot_sankey_input_output_content(df_model):
+
+    df, cooc = _get_input_output_groups(df_model)
+    df.to_csv("data/results/input_output_content_groups_titles.csv", index=False)
     cooc.to_csv("data/results/input_output_content_groups_cooc.csv", index=False)
-    print_information_gain_groups(df_)
+    print_information_gain_groups(df)
 
-    sources = cooc["input_content_grouped"].astype(str)
-    targets = cooc["output_content_grouped"].astype(str)
-    values = cooc["Count"]
+    # Optional: remove very small flows
+    # df = df[df["count"] >= 2]
 
-    # Create unique node list
-    nodes = pd.Index(pd.concat([sources, targets]).unique())
+    # Sort for more stable/readable layout
+    cooc = cooc.sort_values(["input_content_grouped", "Count"], ascending=[True, False])
 
-    # Map labels to numeric IDs
-    source_ids = sources.map(nodes.get_loc)
-    target_ids = targets.map(nodes.get_loc)
-
-    fig = go.Figure(data=[go.Sankey(
-        node=dict(
-            label=nodes.tolist(),
-            pad=15,
-            thickness=18,
-        ),
-        link=dict(
-            source=source_ids,
-            target=target_ids,
-            value=values
-        )
-    )])
-
-    fig.update_layout(
+    return _plot_sankey(
+        cooc,
+        src_col="input_content_grouped",
+        trg_col="output_content_grouped",
+        value_col="Count",
         title_text="Content: Input → Output",
-        title_font_size=20,
-        width=1200,
-        height=800,
-        font=dict(
-            color="brown",
-            size=20,
-        )
+        save_path="data/results/input_output_content_groups.svg",
     )
-
-    fig.write_image(
-        "data/results/input_output_content_groups.svg",
-        scale=4,
-    )
-
-    return fig
 
 
 
