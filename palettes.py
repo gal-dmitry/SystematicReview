@@ -100,5 +100,15 @@ MODALITY_COLORS = {
 }
 
 
+MODALITY_METRIC_COLORS = {
+    "Embeddings":   "#4E79A7",
+    "Regions":      "#F28E2B",
+    "Graphs":       "#E15759",
+    "Attributes":   "#76B7B2",
+    "Pixels":       "#59A14F",
+    "Other metric": "#9C755F"
+}
+
+
 DEFAULT_PALETTE = TABLEAU
 # DEFAULT_PALETTE = tab20_colors

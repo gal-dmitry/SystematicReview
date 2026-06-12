@@ -4,7 +4,8 @@ import plotly.graph_objects as go
 import seaborn as sns
 from copy import deepcopy
 from matplotlib.ticker import MaxNLocator
-from palettes import DEFAULT_PALETTE, MODALITY_COLORS
+from matplotlib.patches import Patch
+from palettes import DEFAULT_PALETTE, MODALITY_COLORS, MODALITY_METRIC_COLORS
 
 
 PATH = r"data\src\conflated_database___2026_03_31__11_14_35.xlsx"
@@ -1105,6 +1106,46 @@ def _get_unique_metrics(s_full):
     return df
 
 
+# def plot_num_papers_per_metric(df_metrics):
+
+#     s_full = _get_s_full(df_metrics)
+#     df_unique = _get_unique_metrics(s_full).set_index("metric")
+#     df_multiple = df_unique[df_unique.counts > 1]
+#     df_single = df_unique[df_unique.counts == 1]
+
+#     s_single = set(df_single.index)
+#     num_singles = s_full.apply(lambda x: 1 if len(x.intersection(s_single)) > 0 else 0).sum()
+
+#     df_multiple.loc["Other metric", "counts"] = num_singles
+#     df_multiple.index = [x.split(": ")[-1] for x in df_multiple.index]
+
+
+#     print(f"num of unique metrics: {df_unique.shape[0]}")
+#     print(f"num of one-time-use metrics: {num_singles}")
+#     print(f"num of reusable metrics: {df_unique.shape[0] - num_singles}")
+
+#     counts = df_multiple.sort_values(by="counts", ascending=True)
+
+#     # cmap = plt.cm.Set3
+#     # # cmap = plt.cm.Pastel1
+#     # # cmap = plt.cm.tab20b
+    
+#     # num_colors = len(counts.index)
+#     # colors = [
+#     #     cmap(i / num_colors) for i in range(num_colors)
+#     # ]
+
+#     counts.plot(
+#         kind="barh", 
+#         legend=False,
+#         xlabel="# papers",
+#         ylabel="Metric",
+#         # color=colors,
+#     )
+
+#     # return df_multiple
+
+
 def plot_num_papers_per_metric(df_metrics):
 
     s_full = _get_s_full(df_metrics)
@@ -1114,35 +1155,40 @@ def plot_num_papers_per_metric(df_metrics):
 
     s_single = set(df_single.index)
     num_singles = s_full.apply(lambda x: 1 if len(x.intersection(s_single)) > 0 else 0).sum()
-
     df_multiple.loc["Other metric", "counts"] = num_singles
-    df_multiple.index = [x.split(": ")[-1] for x in df_multiple.index]
 
+    counts = df_multiple.sort_values(by="counts", ascending=True)
+    colors = [MODALITY_METRIC_COLORS[x.split(": ")[0]] for x in counts.index]
+    counts.index = [i.split(": ")[-1] for i in counts.index]
+    counts = counts["counts"]
+
+    legend_handles = [
+        Patch(
+            facecolor=color,
+            label=category
+        )
+        for category, color in MODALITY_METRIC_COLORS.items()
+    ]
 
     print(f"num of unique metrics: {df_unique.shape[0]}")
     print(f"num of one-time-use metrics: {num_singles}")
     print(f"num of reusable metrics: {df_unique.shape[0] - num_singles}")
 
-    counts = df_multiple.sort_values(by="counts", ascending=True)
-
-    # cmap = plt.cm.Set3
-    # # cmap = plt.cm.Pastel1
-    # # cmap = plt.cm.tab20b
-    
-    # num_colors = len(counts.index)
-    # colors = [
-    #     cmap(i / num_colors) for i in range(num_colors)
-    # ]
-
-    counts.plot(
-        kind="barh", 
-        legend=False,
-        xlabel="# papers",
-        ylabel="Metric",
-        # color=colors,
+    ax = counts.plot(
+        kind="barh",
+        color=colors,
     )
 
-    # return df_multiple
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.grid(axis="x", alpha=0.25)
+
+    ax.legend(
+        handles=legend_handles,
+        title="Metric type",
+        loc="lower right",
+    )
+
 
 
 """
