@@ -5,7 +5,7 @@ import seaborn as sns
 from copy import deepcopy
 from matplotlib.ticker import MaxNLocator
 from matplotlib.patches import Patch
-from palettes import DEFAULT_PALETTE, MODALITY_COLORS, MODALITY_METRIC_COLORS
+from palettes import DEFAULT_PALETTE, MODALITY_COLORS, MODALITY_METRIC_COLORS, tab20_colors
 
 
 PATH = r"data\src\conflated_database___2026_03_31__11_14_35.xlsx"
@@ -100,6 +100,7 @@ def _bar(
         ax.grid(axis="y", alpha=0.25)
     else:
         ax.grid(axis="x", alpha=0.25)
+    return ax
 
 
 def _stacked_bar(
@@ -110,13 +111,14 @@ def _stacked_bar(
     rot=0,
     outside_legend=False,
     ax=None,
+    colors=None,
 ):
 
     ax = counts.plot(
         kind=kind,
         stacked=True,
         # figsize=(10,5),
-        color=DEFAULT_PALETTE,
+        color=DEFAULT_PALETTE if not colors else colors,
         edgecolor="white",
         linewidth=0.4,
         rot=rot,
@@ -148,6 +150,7 @@ def _stacked_bar(
         ax.grid(axis="y", alpha=0.25)
     else:
         ax.grid(axis="x", alpha=0.25)
+    return ax
 
 
 def add_count_to_legend(counts):
@@ -632,59 +635,192 @@ def plot_input_output_modality(df_model):
 
 
 
+# """
+# Input/Output: Content
+# """
+# def plot_input_content(df_model, ax=None):
+
+#     counts = df_model["input_content"].explode().value_counts(ascending=True)
+
+#     cmap = plt.cm.tab20
+#     num_colors = len(counts.index)
+#     colors = [
+#         cmap(i / num_colors) for i in range(num_colors)
+#     ]
+
+#     counts.plot(
+#         kind="barh", 
+#         xlabel="# papers", 
+#         ylabel="Input content",
+#         color=colors,
+#         ax=ax,
+#     )
+
+
+# def plot_output_content(df_model, ax=None):
+#     counts = df_model["output_content"].explode().value_counts(ascending=True)
+
+#     cmap = plt.cm.Set3
+#     num_colors = len(counts.index)
+#     colors = [
+#         cmap(i / num_colors) for i in range(num_colors)
+#     ]
+
+#     counts.plot(
+#         kind="barh", 
+#         xlabel="# papers", 
+#         ylabel="Output content",
+#         color=colors,
+#         ax=ax,
+#     )
+
+
+# def plot_input_output_content(df_model):
+
+#     fig, ax = plt.subplots(1, 2, sharex=True, figsize=(9, 4))
+    
+#     plot_input_content(df_model, ax=ax[0])
+#     plot_output_content(df_model, ax=ax[1])
+
+#     ax[0].set_title("(a)", fontsize=11)
+#     ax[1].set_title("(b)", fontsize=11)
+
+#     plt.tight_layout()
+#     plt.show()
+
+
 """
-Input/Output: Content
+Input Content
 """
-def plot_input_content(df_model, ax=None):
+EXPLICIT_MODALITIES = [
+    "floorplan contour",
+    "entrance door",
+    "space geometry",
+    "walls/columns",
+    "interior doors",
+    "floorplan",
+    "partial floorplan",
+    "windows",
+]
 
-    counts = df_model["input_content"].explode().value_counts(ascending=True)
 
-    cmap = plt.cm.tab20
-    num_colors = len(counts.index)
-    colors = [
-        cmap(i / num_colors) for i in range(num_colors)
-    ]
+def _classify_input_modality(modality):
+    if modality in EXPLICIT_MODALITIES:
+        return "explicit"
+    return "intrinsic"
 
-    counts.plot(
-        kind="barh", 
-        xlabel="# papers", 
-        ylabel="Input content",
-        color=colors,
-        ax=ax,
+
+def _get_explicit_intermediate_distinction(df_model):
+    df = pd.DataFrame(df_model["input_content"].explode())
+    df["explicit/intermediate"] = df["input_content"].apply(_classify_input_modality)
+    return df
+
+
+def plot_input_content(df_model):
+    df = _get_explicit_intermediate_distinction(df_model)
+    counts = df.groupby(['explicit/intermediate', 'input_content']).size().unstack(fill_value=0)
+    counts = add_count_to_legend(counts)
+
+    _stacked_bar(
+        counts,
+        kind="bar",
+        x_label="Content Type",
+        y_label="# papers",
+        outside_legend=True,
     )
 
 
+# def plot_output_content(df_model, ax=None):
+#     counts = df_model["output_content"].explode().value_counts(ascending=True)
+
+#     _bar(
+#         counts,
+#         kind="barh",
+#         x_label="# papers",
+#         y_label="Output content",
+#         # rot=0,
+#         # ax=None,
+#         # colors=None,
+#     )
+
+def _double_legend(ax, category_type):
+    handles, labels = ax.get_legend_handles_labels()
+    # if ax.legend_ is not None:
+    #     ax.legend_.remove()
+
+    grouped_handles = []
+    grouped_labels = []
+
+    for group in ["explicit", "intrinsic"]:
+        grouped_handles.append(Patch(facecolor="none", edgecolor="none"))
+        grouped_labels.append(group)
+
+        for h, label in zip(handles, labels):
+            raw_label = label.rsplit(" (", 1)[0]
+            if category_type.get(raw_label) == group:
+                grouped_handles.append(h)
+                grouped_labels.append(label)
+
+    legend = ax.legend(
+        grouped_handles,
+        grouped_labels,
+        loc="upper left",
+        bbox_to_anchor=(1.02, 1),
+        frameon=True,
+    )
+
+    # Make section headings visually distinct
+    for text in legend.get_texts():
+        if text.get_text() in ["explicit", "intrinsic"]:
+            text.set_weight("bold")
+
+
+def plot_input_content(df_model, ax=None):
+    df = _get_explicit_intermediate_distinction(df_model)
+    # Keep category membership before labels get counts appended
+    category_type = (
+        df.drop_duplicates("input_content")
+          .set_index("input_content")["explicit/intermediate"]
+          .to_dict()
+    )
+
+    counts = (
+        df.groupby(["explicit/intermediate", "input_content"])
+          .size()
+          .unstack(fill_value=0)
+    )
+    counts = counts.loc[counts.sum(axis=1).sort_values().index]
+    counts = add_count_to_legend(counts)
+
+    ax = _stacked_bar(
+        counts,
+        kind="barh",
+        x_label="# papers",
+        y_label="Input Content",
+        outside_legend=True,
+        ax=ax,
+        colors=tab20_colors,
+    )
+
+    _double_legend(ax, category_type)
+                   
+
+
+"""
+Output Content
+"""
 def plot_output_content(df_model, ax=None):
     counts = df_model["output_content"].explode().value_counts(ascending=True)
 
-    cmap = plt.cm.Set3
-    num_colors = len(counts.index)
-    colors = [
-        cmap(i / num_colors) for i in range(num_colors)
-    ]
-
-    counts.plot(
-        kind="barh", 
-        xlabel="# papers", 
-        ylabel="Output content",
-        color=colors,
-        ax=ax,
+    _bar(
+        counts,
+        kind="barh",
+        x_label="# papers",
+        y_label="Output content",
+        # rot=0,
+        # ax=None,
+        # colors=None,
     )
-
-
-def plot_input_output_content(df_model):
-
-    fig, ax = plt.subplots(1, 2, sharex=True, figsize=(9, 4))
-    
-    plot_input_content(df_model, ax=ax[0])
-    plot_output_content(df_model, ax=ax[1])
-
-    ax[0].set_title("(a)", fontsize=11)
-    ax[1].set_title("(b)", fontsize=11)
-
-    plt.tight_layout()
-    plt.show()
-
 
 
 """
