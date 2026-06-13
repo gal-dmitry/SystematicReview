@@ -693,13 +693,16 @@ def plot_input_output_modality(df_model):
 Input Content
 """
 EXPLICIT_MODALITIES = [
-    "floorplan contour",
-    "entrance door",
-    "space geometry",
-    "walls/columns",
-    "interior doors",
+    # floorplans
     "floorplan",
     "partial floorplan",
+    # space elements
+    "space geometry",
+    "floorplan contour",
+    # building elements
+    "walls/columns",
+    "entrance door",
+    "interior doors",
     "windows",
 ]
 
@@ -862,7 +865,7 @@ def plot_sankey_input_modality_content(df_model):
         src_col="level1",
         trg_col="level2",
         value_col="count",
-        title_text="Input: modality → Content",
+        title_text="Input: Modality → Content",
         save_path="data/results/input_modality_content.svg",
     )
 
@@ -872,19 +875,24 @@ def plot_sankey_input_modality_content(df_model):
 Input/Output: Information Gain
 """
 def _aggregate_input_content(s):
+    building_elements = {"walls/columns", "entrance door", "interior door", "windows"}
+
     if not len(s):
         return "empty condition"
     elif s & {"floorplan", "partial floorplan"}:
-        return "complete floorplan"
+        return "F: floorplan (+ A, B, C, D, E)"
     elif {"space geometry"} & s:
-        return "space geometry + other"
-    elif {"walls/columns", "entrance door", "interior door", "windows"} & s:
-        return "intermediates + anchors"
-    else:
-        if len(s) == 1:
-            return f"intermediates x1"
+        return "E: space geometry (+ A, B, C, D)"
+    elif {"floorplan contour"} & s:
+        if building_elements & s:
+            return "D: floorplan contour + building elements (+ A)"
         else:
-            return f"intermediates x2+"
+            return "C: floorplan contour (+ A)"
+    elif building_elements & s:
+        return "B: building elements (+ A)"
+    else:
+        print(s)
+        return f"A: intermediate representations"
 
 
 def _aggregate_output_content(s):
@@ -1001,7 +1009,7 @@ def plot_sankey_input_output_content(df_model):
     df, cooc = _get_input_output_groups(df_model)
     df.to_csv("data/results/input_output_content_groups_titles.csv", index=False)
     cooc.to_csv("data/results/input_output_content_groups_cooc.csv", index=False)
-    print_information_gain_groups(df)
+    # print_information_gain_groups(df)
 
     # Optional: remove very small flows
     # df = df[df["count"] >= 2]

@@ -1,23 +1,24 @@
 input_content_grouped,output_content_grouped,Count
-intermediates x1,space geometry,9
-intermediates x1,space geometry + anchors x2,7
-intermediates + anchors,space geometry + anchors x4+,6
-intermediates + anchors,space geometry + anchors x1,5
-intermediates x1,space geometry + anchors x4+,4
-intermediates x1,space geometry + anchors x1,3
-intermediates x2+,space geometry + anchors x2,3
-space geometry + other,space geometry + anchors x4+,3
-intermediates x2+,space geometry + anchors x1,3
-intermediates x1,anchors x1+,2
-complete floorplan,space geometry + anchors x4+,2
-intermediates x2+,space geometry,2
-intermediates x2+,space geometry + anchors x4+,2
-intermediates + anchors,space geometry + anchors x3,2
-intermediates + anchors,anchors x1+,1
-intermediates + anchors,space geometry,1
+A: intermediate representations,space geometry,9
+A: intermediate representations,space geometry + anchors x2,6
+D: floorplan contour + building elements (+ A),space geometry + anchors x4+,6
+C: floorplan contour (+ A),space geometry + anchors x2,4
+C: floorplan contour (+ A),space geometry + anchors x1,4
+A: intermediate representations,space geometry + anchors x4+,4
+D: floorplan contour + building elements (+ A),space geometry + anchors x1,3
+"E: space geometry (+ A, B, C, D)",space geometry + anchors x4+,3
+D: floorplan contour + building elements (+ A),space geometry + anchors x3,2
+A: intermediate representations,space geometry + anchors x1,2
+B: building elements (+ A),space geometry + anchors x1,2
+"F: floorplan (+ A, B, C, D, E)",space geometry + anchors x4+,2
+C: floorplan contour (+ A),space geometry + anchors x4+,2
+C: floorplan contour (+ A),anchors x1+,2
+C: floorplan contour (+ A),space geometry,2
+A: intermediate representations,space geometry + anchors x3,1
+A: intermediate representations,anchors x1+,1
+D: floorplan contour + building elements (+ A),space geometry,1
+D: floorplan contour + building elements (+ A),anchors x1+,1
+"E: space geometry (+ A, B, C, D)",space geometry + anchors x2,1
+"E: space geometry (+ A, B, C, D)",space geometry + anchors x1,1
+"E: space geometry (+ A, B, C, D)",space geometry + anchors x3,1
 empty condition,anchors x1+,1
-intermediates x2+,anchors x1+,1
-intermediates x2+,space geometry + anchors x3,1
-space geometry + other,space geometry + anchors x1,1
-space geometry + other,space geometry + anchors x2,1
-space geometry + other,space geometry + anchors x3,1
