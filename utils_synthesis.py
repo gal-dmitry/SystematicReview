@@ -707,7 +707,7 @@ EXPLICIT_MODALITIES = [
 def _classify_input_modality(modality):
     if modality in EXPLICIT_MODALITIES:
         return "explicit"
-    return "intrinsic"
+    return "intermediate"
 
 
 def _get_explicit_intermediate_distinction(df_model):
@@ -751,7 +751,7 @@ def _double_legend(ax, category_type):
     grouped_handles = []
     grouped_labels = []
 
-    for group in ["explicit", "intrinsic"]:
+    for group in ["explicit", "intermediate"]:
         grouped_handles.append(Patch(facecolor="none", edgecolor="none"))
         grouped_labels.append(group)
 
@@ -771,7 +771,7 @@ def _double_legend(ax, category_type):
 
     # Make section headings visually distinct
     for text in legend.get_texts():
-        if text.get_text() in ["explicit", "intrinsic"]:
+        if text.get_text() in ["explicit", "intermediate"]:
             text.set_weight("bold")
 
 
