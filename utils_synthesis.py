@@ -878,7 +878,7 @@ def _aggregate_input_content(s):
     building_elements = {"walls/columns", "entrance door", "interior door", "windows"}
 
     if not len(s):
-        return "empty condition"
+        return "0: empty condition"
     elif s & {"floorplan", "partial floorplan"}:
         return "F: floorplan (+ A, B, C, D, E)"
     elif {"space geometry"} & s:
@@ -895,18 +895,38 @@ def _aggregate_input_content(s):
         return f"A: intermediate representations"
 
 
+# def _aggregate_output_content(s):
+#     if "space contour/function" in s:
+#         result = "space geometry"
+#         length = len(s) - 1
+#         if length > 0:
+#             if length >= 4:
+#                 length = "4+"
+#             result += f" + anchors x{length}"
+
+#     else:
+#         result = "anchors x1+"
+#     return result
+
+
 def _aggregate_output_content(s):
-    if "space contour/function" in s:
+    if "space contour/function" not in s:
+        result = "A: walls/columns (+ other building elements)"
+    else:
         result = "space geometry"
         length = len(s) - 1
-        if length > 0:
-            if length >= 4:
-                length = "4+"
-            result += f" + anchors x{length}"
-
-    else:
-        result = "anchors x1+"
+        if length == 0:
+            result = f"B: {result}"
+        elif length == 1:
+            result = f"C: {result} + building elements x1"
+        elif length == 2:
+            result = f"D: {result} + building elements x2"
+        elif length == 3:
+            result = f"E: {result} + building elements x3"
+        else:
+            result = f"F: {result} + building elements x4+"
     return result
+
 
 
 def _get_input_output_groups(df_model):
