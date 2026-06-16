@@ -1,5 +1,6 @@
 **/*.ipynb_checkpoints/
 .ipynb_checkpoint/
 __pycache__/
+.vscode
 
 _private_keys.py

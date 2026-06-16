@@ -1,24 +1,23 @@
 input_content_grouped,output_content_grouped,Count
-A: intermediate representations,B: space geometry,9
-A: intermediate representations,D: space geometry + building elements x2,6
-D: floorplan contour + building elements (+ A),F: space geometry + building elements x4+,6
-C: floorplan contour (+ A),C: space geometry + building elements x1,4
-C: floorplan contour (+ A),D: space geometry + building elements x2,4
-A: intermediate representations,F: space geometry + building elements x4+,4
-D: floorplan contour + building elements (+ A),C: space geometry + building elements x1,3
-"E: space geometry (+ A, B, C, D)",F: space geometry + building elements x4+,3
-D: floorplan contour + building elements (+ A),E: space geometry + building elements x3,2
-C: floorplan contour (+ A),F: space geometry + building elements x4+,2
-A: intermediate representations,C: space geometry + building elements x1,2
-"F: floorplan (+ A, B, C, D, E)",F: space geometry + building elements x4+,2
-C: floorplan contour (+ A),B: space geometry,2
-C: floorplan contour (+ A),A: walls/columns (+ other building elements),2
-B: building elements (+ A),C: space geometry + building elements x1,2
-A: intermediate representations,E: space geometry + building elements x3,1
-A: intermediate representations,A: walls/columns (+ other building elements),1
-0: empty condition,A: walls/columns (+ other building elements),1
-D: floorplan contour + building elements (+ A),A: walls/columns (+ other building elements),1
-D: floorplan contour + building elements (+ A),B: space geometry,1
-"E: space geometry (+ A, B, C, D)",C: space geometry + building elements x1,1
-"E: space geometry (+ A, B, C, D)",E: space geometry + building elements x3,1
-"E: space geometry (+ A, B, C, D)",D: space geometry + building elements x2,1
+A: non-geometric,B: space geometry,9
+A: non-geometric,D: space geometry + building elements x2,6
+D: floorplan contour + building elements (+ non-geometric),F: space geometry + building elements x4+,6
+E: floorplan/space geometry (+ any other),F: space geometry + building elements x4+,5
+A: non-geometric,F: space geometry + building elements x4+,4
+C: floorplan contour (+ non-geometric),C: space geometry + building elements x1,4
+C: floorplan contour (+ non-geometric),D: space geometry + building elements x2,4
+D: floorplan contour + building elements (+ non-geometric),C: space geometry + building elements x1,3
+A: non-geometric,C: space geometry + building elements x1,2
+D: floorplan contour + building elements (+ non-geometric),E: space geometry + building elements x3,2
+C: floorplan contour (+ non-geometric),F: space geometry + building elements x4+,2
+C: floorplan contour (+ non-geometric),B: space geometry,2
+C: floorplan contour (+ non-geometric),A: walls/columns (+ other building elements),2
+B: building elements (+ non-geometric),C: space geometry + building elements x1,2
+A: non-geometric,E: space geometry + building elements x3,1
+A: non-geometric,A: walls/columns (+ other building elements),1
+D: floorplan contour + building elements (+ non-geometric),B: space geometry,1
+D: floorplan contour + building elements (+ non-geometric),A: walls/columns (+ other building elements),1
+E: floorplan/space geometry (+ any other),C: space geometry + building elements x1,1
+E: floorplan/space geometry (+ any other),D: space geometry + building elements x2,1
+E: floorplan/space geometry (+ any other),E: space geometry + building elements x3,1
+F: empty condition,A: walls/columns (+ other building elements),1

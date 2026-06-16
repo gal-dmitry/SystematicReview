@@ -22,18 +22,20 @@ def _process_metrics(df):
     return df_metrics
 
 
+def _update_model_name(name):
+    if "Hybrid" in name:
+        if "Discriminative" in name:
+            return "Discriminative: Hybrid"
+        return "Generative: Hybrid"
+    else:
+        if "Discriminative" in name:
+            return name
+        return f"Generative: {name}"
+
+
 def _process_model(df_model):
-
     df_model["Discriminative/Generative"] = df_model["Core Generative Paradigm"].apply(lambda x: "Discriminative" if "Discriminative" in x else "Generative")
-
-    df_model["Model"] = \
-    df_model["Core Generative Paradigm"].apply(lambda x: 
-        "Hybrid: Discriminative" if ("Hybrid" in x and "Discriminative" in x) else 
-        (
-            "Hybrid: Generative" if "Hybrid" in x else x
-        )
-    )
-
+    df_model["Model"] = df_model["Core Generative Paradigm"].apply(_update_model_name)
     return df_model
 
 
@@ -169,6 +171,71 @@ def add_count_to_legend(counts):
     return counts
 
 
+# def _plot_sankey(
+#     df,
+#     src_col="level1",
+#     trg_col="level2",
+#     value_col="count",
+#     title_text="Input: Modality → Content",
+#     save_path="data/results/input_modality_content.svg",
+# ):  
+    
+#     sources = df[src_col].astype(str)
+#     targets = df[trg_col].astype(str)
+#     values = df[value_col]
+
+#     nodes = pd.Index(pd.concat([sources, targets]).unique())
+
+#     source_ids = sources.map(nodes.get_loc)
+#     target_ids = targets.map(nodes.get_loc)
+
+#     # Node sizes: total in + total out
+#     out_counts = df.groupby(src_col)[value_col].sum()
+#     in_counts = df.groupby(trg_col)[value_col].sum()
+
+#     node_counts = {
+#         node: int(max(out_counts.get(node, 0), in_counts.get(node, 0)))
+#         for node in nodes
+#     }
+
+#     labels = [
+#         f"{node} ({node_counts[node]})"
+#         for node in nodes
+#     ]
+
+#     fig = go.Figure(data=[go.Sankey(
+#         arrangement="snap",
+#         node=dict(
+#             label=labels,
+#             pad=25,
+#             thickness=22,
+#             line=dict(color="rgba(0,0,0,0.25)", width=0.5),
+#         ),
+#         link=dict(
+#             source=source_ids,
+#             target=target_ids,
+#             value=values,
+#             color="rgba(120,120,120,0.25)",
+#         )
+#     )])
+
+#     fig.update_layout(
+#         title_text=title_text,
+#         title_font_size=20,
+#         font_size=20,
+#         width=1400,
+#         height=900,
+#         margin=dict(l=40, r=40, t=80, b=40),
+#     )
+
+#     fig.write_image(
+#         save_path,
+#         scale=4,
+#     )
+
+#     return fig
+
+
 def _plot_sankey(
     df,
     src_col="level1",
@@ -176,16 +243,42 @@ def _plot_sankey(
     value_col="count",
     title_text="Input: Modality → Content",
     save_path="data/results/input_modality_content.svg",
-):  
-    
+    src_order=None,
+    trg_order=None,
+):
+    df = df.copy()
+
     sources = df[src_col].astype(str)
     targets = df[trg_col].astype(str)
     values = df[value_col]
 
-    nodes = pd.Index(pd.concat([sources, targets]).unique())
+    # Existing unique values
+    src_unique = pd.Index(sources.unique())
+    trg_unique = pd.Index(targets.unique())
 
-    source_ids = sources.map(nodes.get_loc)
-    target_ids = targets.map(nodes.get_loc)
+    # If explicit order is given, keep only values that exist,
+    # then append any missing values at the end
+    if src_order is None:
+        src_nodes = list(src_unique)
+    else:
+        src_order = [str(x) for x in src_order]
+        src_nodes = [x for x in src_order if x in src_unique]
+        src_nodes += [x for x in src_unique if x not in src_nodes]
+
+    if trg_order is None:
+        trg_nodes = list(trg_unique)
+    else:
+        trg_order = [str(x) for x in trg_order]
+        trg_nodes = [x for x in trg_order if x in trg_unique]
+        trg_nodes += [x for x in trg_unique if x not in trg_nodes]
+
+    # Final node order: all sources first, all targets second
+    nodes = pd.Index(src_nodes + trg_nodes)
+
+    node_to_id = {node: i for i, node in enumerate(nodes)}
+
+    source_ids = sources.map(node_to_id)
+    target_ids = targets.map(node_to_id)
 
     # Node sizes: total in + total out
     out_counts = df.groupby(src_col)[value_col].sum()
@@ -201,10 +294,32 @@ def _plot_sankey(
         for node in nodes
     ]
 
+    # Explicit coordinates:
+    # sources on left, targets on right;
+    # y-order follows src_order / trg_order
+    n_src = len(src_nodes)
+    n_trg = len(trg_nodes)
+
+    x = [0.01] * n_src + [0.99] * n_trg
+
+    y_src = (
+        [i / max(n_src - 1, 1) for i in range(n_src)]
+        if n_src > 1 else [0.5]
+    )
+    y_trg = (
+        [i / max(n_trg - 1, 1) for i in range(n_trg)]
+        if n_trg > 1 else [0.5]
+    )
+
+    y = y_src + y_trg
+
     fig = go.Figure(data=[go.Sankey(
+        # arrangement="fixed",  # important: respect x/y
         arrangement="snap",
         node=dict(
             label=labels,
+            x=x,
+            y=y,
             pad=25,
             thickness=22,
             line=dict(color="rgba(0,0,0,0.25)", width=0.5),
@@ -226,10 +341,8 @@ def _plot_sankey(
         margin=dict(l=40, r=40, t=80, b=40),
     )
 
-    fig.write_image(
-        save_path,
-        scale=4,
-    )
+    if save_path is not None:
+        fig.write_image(save_path, scale=4)
 
     return fig
 
@@ -709,8 +822,8 @@ EXPLICIT_MODALITIES = [
 
 def _classify_input_modality(modality):
     if modality in EXPLICIT_MODALITIES:
-        return "explicit"
-    return "intermediate"
+        return "geometric"
+    return "non-geometric"
 
 
 def _get_explicit_intermediate_distinction(df_model):
@@ -754,7 +867,7 @@ def _double_legend(ax, category_type):
     grouped_handles = []
     grouped_labels = []
 
-    for group in ["explicit", "intermediate"]:
+    for group in ["geometric", "non-geometric"]:
         grouped_handles.append(Patch(facecolor="none", edgecolor="none"))
         grouped_labels.append(group)
 
@@ -774,7 +887,7 @@ def _double_legend(ax, category_type):
 
     # Make section headings visually distinct
     for text in legend.get_texts():
-        if text.get_text() in ["explicit", "intermediate"]:
+        if text.get_text() in ["geometric", "non-geometric"]:
             text.set_weight("bold")
 
 
@@ -848,6 +961,18 @@ def _get_csv_modality_content(df_model):
     counts.to_csv("data/results/input_modality_content.csv", index=False)
 
 
+# def _process_lvl1(name):
+#     dct = {
+#         "pixels": "A: pixels",
+#         "graphs": "B: graphs",
+#         "sequence": "C: sequence",
+#         "vector": "D: vector",
+#         "polygons": "E: polygons",
+#         "wall graphs": "F: wall graphs",
+#     }
+#     return dct[name]
+
+
 def plot_sankey_input_modality_content(df_model):
     _get_csv_modality_content(df_model)
 
@@ -859,6 +984,7 @@ def plot_sankey_input_modality_content(df_model):
 
     # Sort for more stable/readable layout
     df = df.sort_values(["level1", "count"], ascending=[True, False])
+    # df["level1"] = df["level1"].apply(_process_lvl1)
 
     return _plot_sankey(
         df,
@@ -878,21 +1004,20 @@ def _aggregate_input_content(s):
     building_elements = {"walls/columns", "entrance door", "interior door", "windows"}
 
     if not len(s):
-        return "0: empty condition"
-    elif s & {"floorplan", "partial floorplan"}:
-        return "F: floorplan (+ A, B, C, D, E)"
-    elif {"space geometry"} & s:
-        return "E: space geometry (+ A, B, C, D)"
+        # return "0: empty condition"
+        return "F: empty condition"
+    elif {"floorplan", "partial floorplan", "space geometry"} & s:
+        return "E: floorplan/space geometry (+ any other)"
     elif {"floorplan contour"} & s:
         if building_elements & s:
-            return "D: floorplan contour + building elements (+ A)"
+            return "D: floorplan contour + building elements (+ non-geometric)"
         else:
-            return "C: floorplan contour (+ A)"
+            return "C: floorplan contour (+ non-geometric)"
     elif building_elements & s:
-        return "B: building elements (+ A)"
+        return "B: building elements (+ non-geometric)"
     else:
-        print(s)
-        return f"A: intermediate representations"
+        # print(s)
+        return f"A: non-geometric"
 
 
 # def _aggregate_output_content(s):
