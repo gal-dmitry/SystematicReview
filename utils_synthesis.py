@@ -942,6 +942,18 @@ def plot_output_content(df_model, ax=None):
 """
 Input: Modality/Content
 """
+# def _process_lvl1(name):
+#     dct = {
+#         "pixels": "A: pixels",
+#         "graphs": "B: graphs",
+#         "sequence": "C: sequence",
+#         "vector": "D: vector",
+#         "polygons": "E: polygons",
+#         "wall graphs": "F: wall graphs",
+#     }
+#     return dct[name]
+
+
 def _get_csv_modality_content(df_model):
     levels = df_model["input"].explode().str.split(':', n=1, expand=True)
     levels.columns = ['level1', 'level2']
@@ -959,18 +971,6 @@ def _get_csv_modality_content(df_model):
 
     # Export
     counts.to_csv("data/results/input_modality_content.csv", index=False)
-
-
-# def _process_lvl1(name):
-#     dct = {
-#         "pixels": "A: pixels",
-#         "graphs": "B: graphs",
-#         "sequence": "C: sequence",
-#         "vector": "D: vector",
-#         "polygons": "E: polygons",
-#         "wall graphs": "F: wall graphs",
-#     }
-#     return dct[name]
 
 
 def plot_sankey_input_modality_content(df_model):
