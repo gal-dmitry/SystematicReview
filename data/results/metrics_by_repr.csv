@@ -1,0 +1,6 @@
+,Representations,Similarity,Instruction-Following,Normative Compliance,Intrinsic
+0,Pixels,"['classification performance', 'SSIM', 'PSNR', 'MAE', 'MSE', 'RMSE', 'R2', 'MAPE', 'sMAPE']",[],[],[]
+1,Regions,"['IoU-based', 'Boundary Chamfer Distance', 'Boundary IoU-based']","['Boundary IoU', 'Boundary Compatibility']",[],"['Vectorization Success Rate', 'Geometric validity', 'Percent of isolated rooms']"
+2,Graphs,"['GED', 'Graph Compatibility']",['GED'],['adjacency violations'],[]
+3,Embeddings,"['FID', 'LPIPS', 'real/fake', 'Coverage', 'Density', 'KID']",['CLIP Score'],[],['IS']
+4,Attributes,"['room statistics', 'room class prediction', 'VGA']",['Prompt Consistency'],"['AEC', 'accessibility check', 'EUI', 'functional rationality']","['RAI', 'Space Property Proportion', 'Shortest-path sanity', 'Room count distribution', 'Min/Max Area ratio', 'Connectivity Ratio', 'Self-Consistency', 'ARS']"

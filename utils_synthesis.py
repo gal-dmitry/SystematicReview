@@ -1439,11 +1439,13 @@ def plot_num_papers_per_metric(df_metrics):
 
     s_full = _get_s_full(df_metrics)
     df_unique = _get_unique_metrics(s_full).set_index("metric")
-    df_multiple = df_unique[df_unique.counts > 1]
-    df_single = df_unique[df_unique.counts == 1]
 
-    s_single = set(df_single.index)
-    num_singles = s_full.apply(lambda x: 1 if len(x.intersection(s_single)) > 0 else 0).sum()
+    df_single = df_unique[df_unique.counts == 1]
+    num_singles = df_single.shape[0]
+    # s_single = set(df_single.index)
+    # num_singles = s_full.apply(lambda x: 1 if len(x.intersection(s_single)) > 0 else 0).sum()
+
+    df_multiple = df_unique[df_unique.counts > 1]
     df_multiple.loc["Other metric", "counts"] = num_singles
 
     counts = df_multiple.sort_values(by="counts", ascending=True)
@@ -1461,7 +1463,7 @@ def plot_num_papers_per_metric(df_metrics):
 
     print(f"num of unique metrics: {df_unique.shape[0]}")
     print(f"num of one-time-use metrics: {num_singles}")
-    print(f"num of reusable metrics: {df_unique.shape[0] - num_singles}")
+    print(f"num of reusable metrics: {df_multiple.shape[0] - 1}")
 
     ax = counts.plot(
         kind="barh",
