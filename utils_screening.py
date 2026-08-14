@@ -69,23 +69,64 @@ def get_included_df(path=r"data\src\conflated_database___2026_03_31__11_14_35.xl
 """
 Plots
 """
-def plot_venn_diagram(included_df):
+def plot_venn_diagram(
+    included_df,
+    savepath="data/results/figures/FIGURE_03.png", 
+    dpi=1_000,
+):
 
     venn_numbers = pd.DataFrame(included_df.topic.value_counts()).T
 
-    fig, ax = plt.subplots(figsize=(8,8))
+    # Individual Venn regions
+    model = venn_numbers["Model"].item()
+    dataset = venn_numbers["Dataset"].item()
+    evaluation = venn_numbers["Evaluation"].item()
+
+    model_dataset = venn_numbers["Model, Dataset"].item()
+    model_evaluation = venn_numbers["Model, Evaluation"].item()
+    dataset_evaluation = venn_numbers["Dataset, Evaluation"].item()
+
+    all_three = venn_numbers["Model, Dataset, Evaluation"].item()
+
+    # Total number of papers in each circle
+    model_total = (
+        model
+        + model_dataset
+        + model_evaluation
+        + all_three
+    )
+
+    dataset_total = (
+        dataset
+        + model_dataset
+        + dataset_evaluation
+        + all_three
+    )
+
+    evaluation_total = (
+        evaluation
+        + model_evaluation
+        + dataset_evaluation
+        + all_three
+    )
+
+    fig, ax = plt.subplots(figsize=(8, 8))
 
     v = venn3(
         subsets=(
-            venn_numbers["Model"].item(),
-            venn_numbers["Dataset"].item(),
-            venn_numbers["Model, Dataset"].item(),
-            venn_numbers["Evaluation"].item(),
-            venn_numbers["Model, Evaluation"].item(),
-            venn_numbers["Dataset, Evaluation"].item(),
-            venn_numbers["Model, Dataset, Evaluation"].item()
+            model,
+            dataset,
+            model_dataset,
+            evaluation,
+            model_evaluation,
+            dataset_evaluation,
+            all_three
         ),
-        set_labels=('Model', 'Dataset', 'Evaluation')
+        set_labels=(
+            f'Model (n={model_total})',
+            f'Dataset (n={dataset_total})',
+            f'          Evaluation (n={evaluation_total})'
+        )
     )
 
     # -----------------------------
@@ -103,15 +144,13 @@ def plot_venn_diagram(included_df):
 
     # -----------------------------
     # Region colors
-    # IDs:
-    # 100, 010, 110, 001, 101, 011, 111
     # -----------------------------
     v.get_patch_by_id('100').set_color("red")
     v.get_patch_by_id('010').set_color("green")
     v.get_patch_by_id('001').set_color("blue")
 
-    # Optional:
-    v.get_patch_by_id('111').set_color("purple")
+    if v.get_patch_by_id('111'):
+        v.get_patch_by_id('111').set_color("purple")
 
     # -----------------------------
     # Transparency
@@ -130,16 +169,18 @@ def plot_venn_diagram(included_df):
             patch.set_edgecolor('black')
             patch.set_linewidth(1.5)
 
-    # plt.show()
-
     plt.savefig(
-        "data/results/venn.png",
-        dpi=300,
+        savepath,
+        dpi=dpi,
         bbox_inches='tight'
     )
 
 
-def plot_publisher_per_year(included_df):
+def plot_publisher_per_year(
+    included_df,
+    savepath="data/results/figures/FIGURE_02.png",
+    dpi=1_000,
+):
     counts = included_df.groupby(['Year', 'Publisher']).size().unstack(fill_value=0).sort_index()
 
     totals = counts.sum(axis=0)
@@ -161,7 +202,6 @@ def plot_publisher_per_year(included_df):
     colors = [
         cmap(i / num_colors) for i in range(num_colors)
     ]
-    # colors = TABLEAU_EXTENDED
 
     ax = counts.plot(
         kind='bar',
@@ -184,36 +224,8 @@ def plot_publisher_per_year(included_df):
         frameon=False,
     )
 
-
-# def plot_publisher(included_df):
-#     counts = included_df["Publisher"].value_counts(ascending=True)
-
-#     cmap = plt.cm.tab20
-#     num_colors = len(counts.index)
-#     colors = [
-#         cmap(i / num_colors) for i in range(num_colors)
-#     ] 
-
-#     ax = counts.plot(kind="barh", color=colors)
-#     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
-#     ax.set_xlabel("# papers")
-#     ax.set_ylabel("Publisher")
-
-
-# def plot_year(included_df):
-#     counts = included_df["Year"].value_counts().sort_index()
-
-#     # cmap = plt.cm.tab20
-#     # num_colors = len(counts.index)
-#     # colors = [
-#     #     cmap(i / num_colors) for i in range(num_colors)
-#     # ] 
-
-#     ax = counts.plot(
-#         kind="bar", 
-#         rot=0,
-#         # color=colors
-#     )
-#     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
-#     ax.set_xlabel("Year")
-#     ax.set_ylabel("# papers")
+    plt.savefig(
+        savepath,
+        dpi=dpi,
+        bbox_inches='tight'
+    )
